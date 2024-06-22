@@ -1,0 +1,102 @@
+@import 'config';
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+    width: 100%;
+
+    &-logo {
+        width: 120px;
+    }
+
+    .profile-container-avatar {
+        box-shadow: 0 2px 2px 0 $shadow-color;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+        font-family: inherit !important;
+
+        span {
+            font-size: 18px !important;
+        }
+    }
+
+    .profile-container-avatar:hover {
+        cursor: pointer;
+    }
+
+    .profile-container-menu {
+
+        padding: 1rem;
+        background-color: $input-background !important;
+
+        box-shadow: 0 4px 4px 0 $shadow-color;
+        color: $primary-text;
+        border-radius: 0.5rem;
+
+        &-item {
+
+            background-color: $input-background !important;
+            color: $primary-text;
+            padding: 0rem;
+            font-family: inherit;
+            display: flex;
+            gap: 1rem;
+            justify-content: stretch;
+            align-items: center;
+
+            &-right {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: stretch;
+                gap: 1rem;
+
+                .top {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.2rem;
+                    align-items: stretch;
+                    justify-content: flex-start;
+
+                    p {
+                        font-weight: 400;
+                        color: $primary-text !important;
+                        text-transform: none;
+                        font-size: 15px;
+                        font-family: inherit;
+                    }
+
+                    span {
+                        font-weight: 300;
+                        color: $secondary-text;
+                        text-transform: none;
+                        font-family: inherit;
+                        font-size: 13px;
+                    }
+                }
+
+                .bottom {
+                    padding: 0.5rem 0.8rem;
+                    outline: none;
+                    background-color: $accent-color;
+                    color: $primary-background;
+                    border-radius: 0.7rem;
+                    border: 1px solid transparent;
+                    font-size: 13px;
+                    font-family: inherit;
+                    border: 1px solid transparent;
+                    cursor: pointer;
+                    font-family: inherit;
+                    // transition: all 200ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                    &:hover {
+                        background: transparent;
+                        color: $primary-text;
+                        border: 1px solid $medium-border;
+                    }
+                }
+            }
+        }
+    }
+}

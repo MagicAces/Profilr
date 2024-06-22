@@ -1,0 +1,92 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  googleID       String    @unique
+  username       String    
+  lastLogin      DateTime
+  accessToken    String?
+  refreshToken   String?
+  provider       String
+  photo          String?
+  created_on     DateTime  @default(now()) 
+  updated_at     DateTime  @updatedAt
+  student        Student?
+
+
+  @@map("users")
+}
+
+model Student {
+  id             Int       @id @default(autoincrement())
+  first_name     String    
+  last_name      String
+  email          String    @unique
+  other_name     String?
+  gender         Gender   
+  program_id     Int
+  phone_no       String
+  level          Int      
+  index_number   Int       @unique
+  image_url      String?  
+  reference_no   Int       @unique
+  created_on     DateTime  @default(now()) 
+  updated_at     DateTime  @updatedAt
+  user_id        Int       @unique
+  courses        Course[]
+  
+  
+  user           User      @relation(fields: [user_id], references: [id])
+  program        Program   @relation(fields: [program_id], references: [id])
+  @@map("students")
+}
+
+model Course {
+  id            Int         @id @default(autoincrement())
+  name          String 
+  code          String
+  level         String
+  semester      Int
+  program_id    Int
+  credit        Int
+  type          CourseType  @default(Compulsory)
+  created_on    DateTime    @default(now()) 
+  updated_at    DateTime    @updatedAt
+  students      Student[]
+  program       Program     @relation(fields: [program_id], references: [id])
+  @@map("courses")
+}
+
+model Program { 
+  id             Int       @id @default(autoincrement())
+  name           String
+  created_on     DateTime  @default(now()) 
+  updated_at     DateTime  @updatedAt
+  course         Course[]
+  student        Student[]
+
+  @@map("programs")
+}
+enum CourseType {
+  Compulsory
+  Elective
+
+  @@map("course_types")
+}
+
+enum Gender {
+  Male
+  Female
+
+  @@map("gender")
+}

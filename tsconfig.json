@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "jsx": "preserve",
+    "module": "commonjs",
+    "allowJs": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "rootDir": "./backend",
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types", "./backend/types"]
+  },
+  "include": ["backend/**/*"],
+  "exclude": ["node_modules", "dist", "frontend"]
+}
