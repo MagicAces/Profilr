@@ -14,9 +14,11 @@ const Personal = () => {
       <div className="student-container-personal">
         <div className="header">
           <h3 className="heading">Personal Details</h3>
-          <Link to="/edit" className="edit-link">
-            <TbUserEdit /> <span>Edit Profile</span>
-          </Link>
+          {!loading && (
+            <Link to="/edit" className="edit-link">
+              <TbUserEdit /> <span>Edit Profile</span>
+            </Link>
+          )}
         </div>
         <div className="body">
           <div className="body-left">
