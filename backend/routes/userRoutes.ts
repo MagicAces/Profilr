@@ -26,6 +26,7 @@ router.get("/auth/failure", user.authFailure);
 
 router.post("/logout", user.logoutUser);
 
+router.post("/fetch", protect, user.fetchProfile);
 router.get("/profile", protect, user.getProfile);
 router.post("/profile", protect, user.createProfile);
 router.put("/profile/:id", protect, user.editProfile);

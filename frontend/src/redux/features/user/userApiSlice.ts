@@ -9,6 +9,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+    fetchProfile: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/fetch`,
+        method: "POST",
+      }),
+      invalidatesTags: ["User"],
+    }),
     createProfile: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/profile`,
@@ -37,6 +44,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetProfileQuery,
+  useFetchProfileMutation,
   useCreateProfileMutation,
   useLogoutMutation,
   useUpdateProfileMutation,

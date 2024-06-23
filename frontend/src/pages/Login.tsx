@@ -6,7 +6,10 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../redux/features/auth/authSlice";
-import { useGetProfileQuery } from "../redux/features/user/userApiSlice";
+import {
+  useFetchProfileMutation,
+  useGetProfileQuery,
+} from "../redux/features/user/userApiSlice";
 import { AUTH_URL } from "../redux/constants";
 import Starfield from "react-starfield";
 import xaminate from "../assets/xaminate.svg";
@@ -16,55 +19,68 @@ import Loader from "../components/Utils/Loader";
 
 const Login = () => {
   const [loader, setLoader] = useState(false);
-  const [skip, setSkip] = useState(true);
+  // const [skip, setSkip] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: any) => state.auth);
-  const { data, error, isLoading } = useGetProfileQuery(null, {
-    skip: skip,
-  });
 
-  useEffect(() => {
-    setSkip(true);
-  }, []);
+  const [fetchProfile, { isLoading }] = useFetchProfileMutation();
+  // const { data, error, isLoading } = useGetProfileQuery(null, {
+  //   skip: skip,
+  // });
+
+  // useEffect(() => {
+  //   setSkip(true);
+  // }, []);
 
   useEffect(() => {
     if (userInfo) navigate("/");
   }, [navigate, userInfo]);
 
-  useEffect(() => {
-    if (error) toast.error("Server Error", { toastId: "E1" });
+  // useEffect(() => {
+  //   if (error) toast.error("Server Error", { toastId: "E1" });
 
-    if (!isLoading && !error && data) {
-      dispatch(setCredentials(data?.user));
-      navigate("/");
-    }
-  }, [dispatch, isLoading, error, navigate]);
+  //   if (!isLoading && !error && data) {
+  //     dispatch(setCredentials(data?.user));
+  //     navigate("/");
+  //   }
+  // }, [dispatch, isLoading, error, navigate]);
 
   const handleClick = () => {
     setLoader(true);
 
-    // const newWindow = window.open(
-    //   `${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`,
-    //   "_blank",
-    //   "width=700,height=800"
-    // );
+    const newWindow = window.open(
+      `${AUTH_URL}`,
+      "_blank",
+      "width=700,height=800"
+    );
 
-    // if (newWindow) {
-    //   const timer = setInterval(async () => {
-    //     if (newWindow.closed) {
+    if (newWindow) {
+      const timer = setInterval(async () => {
+        if (newWindow.closed) {
+          try {
+            const res = await fetchProfile({}).unwrap();
+            dispatch(setCredentials(res.user));
+            navigate("/");
+            toast.success("Welcome Back", { toastId: "S1" });
+          } catch (error: any) {
+            toast.error(error?.data?.message || error?.error, {
+              toastId: "E1",
+            });
+          }
+          // setSkip(false);
+          setLoader(false);
+          if (timer) {
+            clearInterval(timer);
+          }
+        }
+      }, 1000);
+    }
+    // console.log(`${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`);
+    // window.open(`${AUTH_URL}`, "_self");
+
     // setSkip(false);
     // setLoader(false);
-    //       if (timer) {
-    //         clearInterval(timer);
-    //       }
-    //     }
-    //   }, 1000);
-    // }
-    window.open(`${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`, "_self");
-
-    setSkip(false);
-    setLoader(false);
   };
 
   if (userInfo) return null;

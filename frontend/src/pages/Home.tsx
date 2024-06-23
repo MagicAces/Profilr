@@ -20,9 +20,8 @@ const Home = () => {
     pollingInterval: 5 * 1000,
     refetchOnReconnect: true,
   });
-  
+
   useEffect(() => {
-    
     dispatch(setLoading(userLoading));
     if (!userLoading && !userError && user)
       dispatch(setCredentials(user?.user));

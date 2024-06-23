@@ -35,7 +35,7 @@ app.use(
   session({
     secret: process.env.SECRET || "",
     resave: true,
-    saveUninitialized: false,
+    saveUninitialized: true,
     rolling: true,
     cookie: {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
@@ -70,7 +70,6 @@ passport.deserializeUser((user, cb) => {
   cb(null, user as User);
 });
 
-app.use(express.static(path.join(__dirname, "backend", "public")));
 app.use("/api/users", userRouter);
 app.use("/api/programs", programRouter);
 app.use("/api/courses", courseRouter);
