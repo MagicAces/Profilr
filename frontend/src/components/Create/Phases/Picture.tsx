@@ -55,6 +55,7 @@ const Picture = () => {
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [loader, setLoader] = useState(false);
+  const [modelsLoaded, isModelsLoaded] = useState(false);
 
   const [createProfile, { isLoading: createLoading }] =
     useCreateProfileMutation();
@@ -71,7 +72,12 @@ const Picture = () => {
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
         faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-      ]);
+      ])
+        .then(() => {
+          console.log("hello");
+          isModelsLoaded(true);
+        })
+        .catch((err) => console.log(err));
     };
 
     loadModels();
@@ -178,6 +184,7 @@ const Picture = () => {
     [completedCrop]
   );
   const validateFace = async (imageBlob: Blob): Promise<number> => {
+    if (!modelsLoaded) return 0;
     try {
       const image = await faceapi.bufferToImage(imageBlob);
 
