@@ -43,6 +43,33 @@ const Login = () => {
   //   }
   // }, [dispatch, isLoading, error, navigate]);
 
+  useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      if (
+        event.origin === import.meta.env.VITE_SERVER_URL &&
+        event.data === "auth_complete"
+      ) {
+        try {
+          const res = await fetchProfile({}).unwrap();
+          dispatch(setCredentials(res.user));
+          navigate("/");
+          toast.success("Welcome Back", { toastId: "S1" });
+        } catch (error: any) {
+          toast.error(error?.data?.message || error?.error, {
+            toastId: "E1",
+          });
+        }
+        setLoader(false);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [fetchProfile, dispatch, navigate]);
+
   const handleClick = () => {
     setLoader(true);
 
@@ -52,32 +79,12 @@ const Login = () => {
       "width=700,height=800"
     );
 
-    if (newWindow) {
-      const timer = setInterval(async () => {
-        if (newWindow.closed) {
-          try {
-            const res = await fetchProfile({}).unwrap();
-            dispatch(setCredentials(res.user));
-            navigate("/");
-            toast.success("Welcome Back", { toastId: "S1" });
-          } catch (error: any) {
-            toast.error(error?.data?.message || error?.error, {
-              toastId: "E1",
-            });
-          }
-          // setSkip(false);
-          setLoader(false);
-          if (timer) {
-            clearInterval(timer);
-          }
-        }
-      }, 1500);
-    }
-    // console.log(`${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`);
-    // window.open(`${AUTH_URL}`, "_self");
-
-    // setSkip(false);
-    // setLoader(false);
+    const timer = setInterval(() => {
+      if (newWindow && newWindow.closed) {
+        clearInterval(timer);
+        setLoader(false);
+      }
+    }, 1000);
   };
 
   if (userInfo) return null;
