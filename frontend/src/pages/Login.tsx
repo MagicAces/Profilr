@@ -6,10 +6,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../redux/features/auth/authSlice";
-import {
-  useFetchProfileMutation,
-  useGetProfileQuery,
-} from "../redux/features/user/userApiSlice";
+import { useFetchProfileMutation } from "../redux/features/user/userApiSlice";
 import { AUTH_URL } from "../redux/constants";
 import Starfield from "react-starfield";
 import xaminate from "../assets/xaminate.svg";
