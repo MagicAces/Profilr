@@ -21,7 +21,7 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 
-app.use(express.json({ limit: '5mb'}));
+app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
@@ -65,6 +65,7 @@ passport.deserializeUser((user, cb) => {
   cb(null, user as User);
 });
 
+app.use(express.static(path.join(__dirname, "backend", "public")));
 app.use("/api/users", userRouter);
 app.use("/api/programs", programRouter);
 app.use("/api/courses", courseRouter);
