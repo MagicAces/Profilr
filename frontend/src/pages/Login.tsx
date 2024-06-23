@@ -7,84 +7,55 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../redux/features/auth/authSlice";
 import { useFetchProfileMutation } from "../redux/features/user/userApiSlice";
-import { AUTH_URL } from "../redux/constants";
 import Starfield from "react-starfield";
 import xaminate from "../assets/xaminate.svg";
 import knust from "../assets/knust.png";
 import securityShade from "../assets/security_shade.png";
 import Loader from "../components/Utils/Loader";
+import { AUTH_URL } from "../redux/constants";
 
 const Login = () => {
   const [loader, setLoader] = useState(false);
-  // const [skip, setSkip] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: any) => state.auth);
-
   const [fetchProfile, { isLoading }] = useFetchProfileMutation();
-  // const { data, error, isLoading } = useGetProfileQuery(null, {
-  //   skip: skip,
-  // });
-
-  // useEffect(() => {
-  //   setSkip(true);
-  // }, []);
 
   useEffect(() => {
     if (userInfo) navigate("/");
   }, [navigate, userInfo]);
 
-  // useEffect(() => {
-  //   if (error) toast.error("Server Error", { toastId: "E1" });
-
-  //   if (!isLoading && !error && data) {
-  //     dispatch(setCredentials(data?.user));
-  //     navigate("/");
-  //   }
-  // }, [dispatch, isLoading, error, navigate]);
-
   useEffect(() => {
-    const handleMessage = async (event: MessageEvent) => {
-      if (
-        event.origin === import.meta.env.VITE_SERVER_URL &&
-        event.data === "auth_complete"
-      ) {
-        try {
-          const res = await fetchProfile({}).unwrap();
-          dispatch(setCredentials(res.user));
-          navigate("/");
-          toast.success("Welcome Back", { toastId: "S1" });
-        } catch (error: any) {
-          toast.error(error?.data?.message || error?.error, {
-            toastId: "E1",
-          });
-        }
-        setLoader(false);
+    const fetchUserProfile = async () => {
+      try {
+        const res = await fetchProfile({}).unwrap();
+        dispatch(setCredentials(res.user));
+        navigate("/");
+      } catch (error: any) {
+        toast.error(error?.data?.message || error?.error, {
+          toastId: "E1",
+        });
+        navigate("/login");
       }
     };
 
-    window.addEventListener("message", handleMessage);
+    const params = new URLSearchParams(window.location.search);
+    const authSuccess = params.get("auth-success");
+    const error = params.get("error");
 
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
+    if (error) {
+      toast.error(decodeURIComponent(error), { toastId: "E1" });
+    } else if (authSuccess) {
+      setLoader(true);
+      fetchUserProfile();
+    }
   }, [fetchProfile, dispatch, navigate]);
 
   const handleClick = () => {
     setLoader(true);
-
-    const newWindow = window.open(
-      `${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`,
-      "_blank",
-      "width=700,height=800"
-    );
-
-    const timer = setInterval(() => {
-      if (newWindow && newWindow.closed) {
-        clearInterval(timer);
-        setLoader(false);
-      }
-    }, 1000);
+    window.location.href = `${
+      import.meta.env.VITE_SERVER_URL
+    }${AUTH_URL}`;
   };
 
   if (userInfo) return null;

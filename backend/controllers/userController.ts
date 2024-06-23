@@ -14,21 +14,13 @@ import FormData from "form-data";
 // route    GET /api/users/auth/google
 // @access  Public
 export const authGoogle = asyncHandler(async (req: Request, res: Response) => {
-  // Successful authentication, redirect home.
   if (req.user && req.user.id) {
-    // Successful authentication, send a message to the main window and close the popup
     generateToken(res, req.user.id.toString());
-    res.send(`
-      <script>
-        window.opener.postMessage('auth_complete', '${process.env.CLIENT_URL}');
-        window.close();
-      </script>
-    `);
+    res.redirect(`${process.env.CLIENT_URL}/login?auth-success=true`);
   } else {
-    res.status(400).json({ message: "User not authenticated" });
+    res.redirect(`${process.env.CLIENT_URL}/login?error=User not authenticated`);
   }
 });
-
 // @desc    Handle OAuth Failures
 // route    GET /api/users/auth/failure
 // @access  Public
@@ -41,12 +33,9 @@ export const authFailure = asyncHandler(async (req: Request, res: Response) => {
   } else {
     message = req.flash("error")[0];
   }
-  res.send(`
-    <script>
-      window.opener.postMessage('auth_failed', '${process.env.CLIENT_URL}');
-      window.close();
-    </script>
-  `);
+  res.redirect(
+    `${process.env.CLIENT_URL}/failure?message=${encodeURIComponent(message)}`
+  );
 });
 
 // @desc    Log user out
