@@ -16,9 +16,14 @@ import FormData from "form-data";
 export const authGoogle = asyncHandler(async (req: Request, res: Response) => {
   // Successful authentication, redirect home.
   if (req.user && req.user.id) {
-    // Successful authentication, redirect home.
+    // Successful authentication, send a message to the main window and close the popup
     generateToken(res, req.user.id.toString());
-    res.redirect(`${process.env.CLIENT_URL}/success`);
+    res.send(`
+      <script>
+        window.opener.postMessage('auth_complete', '${process.env.CLIENT_URL}');
+        window.close();
+      </script>
+    `);
   } else {
     res.status(400).json({ message: "User not authenticated" });
   }
@@ -36,9 +41,12 @@ export const authFailure = asyncHandler(async (req: Request, res: Response) => {
   } else {
     message = req.flash("error")[0];
   }
-  res.redirect(
-    `${process.env.CLIENT_URL}/failure?message=${encodeURIComponent(message)}`
-  );
+  res.send(`
+    <script>
+      window.opener.postMessage('auth_failed', '${process.env.CLIENT_URL}');
+      window.close();
+    </script>
+  `);
 });
 
 // @desc    Log user out
