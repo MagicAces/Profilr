@@ -51,9 +51,9 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-      callbackURL: process.env.SERVER_URL
-        ? process.env.SERVER_URL + "/api/users/auth/google/welcome"
-        : "/api/users/auth/google/welcome",
+      callbackURL: `${
+        process.env.SERVER_URL || ""
+      }/api/users/auth/google/welcome`,
     },
     googleStrategy
   )
