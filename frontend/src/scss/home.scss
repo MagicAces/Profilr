@@ -12,6 +12,11 @@
     gap: 2.5rem;
     background-color: $secondary-background;
 
+
+    @media (max-width: 570px) {
+        padding: 1.5rem;
+    }
+
     &-content {
         flex-grow: 1;
         width: 100%;

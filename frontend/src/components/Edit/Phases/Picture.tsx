@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import sample from "../../../assets/sample.png";
 import { toast } from "react-toastify";
 import {
-  clearProfile,
   fillStudent,
   setPhase,
 } from "../../../redux/features/profile/profileSlice";
@@ -21,7 +20,8 @@ import { canvasPreview } from "../../../utils/canvasPreview";
 import { blobToBase64 } from "../../../utils/funct";
 import { StudentInput } from "../../../types";
 import { useNavigate } from "react-router";
-import { useCreateProfileMutation } from "../../../redux/features/user/userApiSlice";
+import { useUpdateProfileMutation } from "../../../redux/features/user/userApiSlice";
+import { isEqual } from "lodash";
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -47,6 +47,10 @@ const Picture = () => {
   const { student }: { student: StudentInput } = useSelector(
     (state: any) => state.profile
   );
+  const { userInfo }: { userInfo: any } = useSelector(
+    (state: any) => state.auth
+  );
+
   const [imgSrc, setImgSrc] = useState("");
 
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -55,8 +59,8 @@ const Picture = () => {
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [loader, setLoader] = useState(false);
 
-  const [createProfile, { isLoading: createLoading }] =
-    useCreateProfileMutation();
+  const [updateProfile, { isLoading: updateLoading }] =
+    useUpdateProfileMutation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -195,6 +199,32 @@ const Picture = () => {
     }
   };
 
+  const notEdited = () => {
+    const original: StudentInput = {
+      first_name: userInfo?.student?.first_name ?? "",
+      last_name: userInfo?.student?.last_name ?? "",
+      other_name: userInfo?.student?.other_name ?? "",
+      email: userInfo?.student?.email ?? "",
+      phone_no: userInfo?.student?.phone_no ?? "",
+      gender: userInfo?.student?.gender?.toLowerCase() ?? "",
+      level: userInfo?.student?.level?.toString() ?? "",
+      semester:
+        userInfo?.student?.courses?.length > 0
+          ? userInfo?.student?.courses[0]?.semester
+          : 0,
+      index_number: userInfo?.student?.index_number ?? 0,
+      reference_no: userInfo?.student?.reference_no ?? 0,
+      program_id: userInfo?.student?.program?.id ?? 0,
+      course_ids:
+        userInfo?.student?.courses?.map((course: any) => course?.id) ?? [],
+      image: userInfo?.student?.image_url ?? "",
+    };
+
+    if (isEqual(original, student)) return true;
+
+    return false;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -202,12 +232,19 @@ const Picture = () => {
       toast.error("Please complete the image processing before submitting.");
       return;
     }
+    if (notEdited()) {
+      toast.info("No changes made");
+      navigate("/");
+      return;
+    }
 
     try {
-      const res = await createProfile(student).unwrap();
+      const res = await updateProfile({
+        id: userInfo?.student?.id,
+        data: student,
+      }).unwrap();
       toast.success(res.message);
-      navigate("/", { replace: true });
-      dispatch(clearProfile());
+      navigate("/");
     } catch (error: any) {
       toast.error((error?.data?.message as string) || (error?.error as string));
     }
@@ -215,7 +252,7 @@ const Picture = () => {
 
   return (
     <>
-      {(loader || createLoading) && <Loader curved={false} />}
+      {(loader || updateLoading) && <Loader curved={false} />}
       <form className="picture-upload" onSubmit={handleSubmit}>
         <div className="upload">
           <div className="instructions">
@@ -240,14 +277,14 @@ const Picture = () => {
                   <span className="bolden">not more than 1 year ago</span>
                 </li>
                 <li>
-                  Recommended dimension is{" "}
+                  Recommended dimension should be{" "}
                   <span className="bolden"> 294x412</span>
                 </li>
               </ul>
             </div>
           </div>
           <div className="sample">
-            <img src={sample} alt="Sample Image" />
+            <img src={sample} alt="Sample Image" fetchPriority="high" />
           </div>
         </div>
         <div className="action">

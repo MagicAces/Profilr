@@ -1,3 +1,4 @@
+// import React from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -18,7 +19,7 @@ import Home from "./pages/Home.tsx";
 import Success from "./pages/Success.tsx";
 import Failure from "./pages/Failure.tsx";
 import Create from "./pages/Create.tsx";
-import React from "react";
+import Edit from "./pages/Edit.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<Home />} />
         <Route path="/create" element={<Create />} />
+        <Route path="/edit" element={<Edit />} />
       </Route>
     </Route>
   )
@@ -37,8 +39,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    <React.StrictMode>
+    {/* <React.StrictMode> */}
       <RouterProvider router={router} />
-    </React.StrictMode>
+    {/* </React.StrictMode> */}
   </Provider>
 );

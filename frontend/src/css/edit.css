@@ -1,0 +1,442 @@
+html,
+body {
+  background-color: #121212;
+  color: #FFFFFF;
+  font-family: "Roboto", sans-serif;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+input {
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+  padding: 0.5rem;
+  border-radius: 4px;
+  outline: none;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  font-size: 13px;
+  font-family: inherit;
+}
+input::placeholder {
+  color: #8A8A8A;
+}
+input:focus {
+  border-color: #F0F0F0;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+}
+
+.edit-container {
+  width: 100vw;
+  min-height: 100vh;
+  padding: 2.5rem;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 2.5rem;
+  background-color: #121212;
+}
+@media (max-width: 570px) {
+  .edit-container {
+    padding: 1.5rem;
+  }
+}
+.edit-container-content {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  flex-direction: column;
+  gap: 1rem;
+}
+.edit-container-content-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.edit-container-content-header > h3 {
+  font-size: 22px;
+  color: #FFFFFF;
+}
+.edit-container-content-header > span {
+  font-size: 14px;
+  color: #FFFFFF;
+}
+.edit-container-content-body {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 2rem;
+}
+.edit-container-content-body .personal-info,
+.edit-container-content-body .school-details,
+.edit-container-content-body .courses-offered {
+  flex-grow: 1;
+  border: 1px solid #333333;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-direction: column;
+}
+.edit-container-content-body .personal-info > .row,
+.edit-container-content-body .school-details > .row,
+.edit-container-content-body .courses-offered > .row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 2rem;
+}
+@media (max-width: 475px) {
+  .edit-container-content-body .personal-info > .row,
+  .edit-container-content-body .school-details > .row,
+  .edit-container-content-body .courses-offered > .row {
+    flex-direction: column;
+  }
+}
+.edit-container-content-body .personal-info > .row > div,
+.edit-container-content-body .school-details > .row > div,
+.edit-container-content-body .courses-offered > .row > div {
+  flex-basis: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+.edit-container-content-body .personal-info > .row > div label,
+.edit-container-content-body .school-details > .row > div label,
+.edit-container-content-body .courses-offered > .row > div label {
+  display: flex;
+  align-items: center;
+  font-weight: 300;
+  font-size: 13px;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+}
+.edit-container-content-body .personal-info > .row > div .optional,
+.edit-container-content-body .school-details > .row > div .optional,
+.edit-container-content-body .courses-offered > .row > div .optional {
+  margin-left: 0.3rem;
+  font-style: italic;
+  color: #B3B3B3;
+}
+.edit-container-content-body .personal-info > .row .program-box,
+.edit-container-content-body .school-details > .row .program-box,
+.edit-container-content-body .courses-offered > .row .program-box {
+  flex-basis: 100%;
+  width: 100%;
+}
+.edit-container-content-body .personal-info > .col,
+.edit-container-content-body .school-details > .col,
+.edit-container-content-body .courses-offered > .col {
+  width: 100%;
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 0.6rem;
+  flex-direction: column;
+}
+.edit-container-content-body .personal-info > .col .heading,
+.edit-container-content-body .school-details > .col .heading,
+.edit-container-content-body .courses-offered > .col .heading {
+  font-size: 14px;
+  font-weight: 500;
+}
+.edit-container-content-body .personal-info > .col .line,
+.edit-container-content-body .school-details > .col .line,
+.edit-container-content-body .courses-offered > .col .line {
+  width: 100%;
+  height: 1px;
+  background-color: #333333;
+}
+.edit-container-content-body .personal-info > .col > div,
+.edit-container-content-body .school-details > .col > div,
+.edit-container-content-body .courses-offered > .col > div {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.edit-container-content-body .personal-info > .col > div > div.course,
+.edit-container-content-body .school-details > .col > div > div.course,
+.edit-container-content-body .courses-offered > .col > div > div.course {
+  background-color: transparent;
+  border: 1px solid #333333;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 0.6rem;
+  padding: 0.8rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+}
+@media (max-width: 475px) {
+  .edit-container-content-body .personal-info > .col > div > div.course,
+  .edit-container-content-body .school-details > .col > div > div.course,
+  .edit-container-content-body .courses-offered > .col > div > div.course {
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+}
+.edit-container-content-body .personal-info > .col > div > div.course > div,
+.edit-container-content-body .school-details > .col > div > div.course > div,
+.edit-container-content-body .courses-offered > .col > div > div.course > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.edit-container-content-body .personal-info > .col > div > div.course > div > span:first-of-type,
+.edit-container-content-body .school-details > .col > div > div.course > div > span:first-of-type,
+.edit-container-content-body .courses-offered > .col > div > div.course > div > span:first-of-type {
+  font-size: 12px;
+  font-weight: 300;
+}
+.edit-container-content-body .personal-info > .col > div > div.course > div > span:first-of-type span,
+.edit-container-content-body .school-details > .col > div > div.course > div > span:first-of-type span,
+.edit-container-content-body .courses-offered > .col > div > div.course > div > span:first-of-type span {
+  font-weight: bold;
+}
+.edit-container-content-body .personal-info > .col > div > div.course > div > span:last-of-type,
+.edit-container-content-body .school-details > .col > div > div.course > div > span:last-of-type,
+.edit-container-content-body .courses-offered > .col > div > div.course > div > span:last-of-type {
+  font-size: 14px;
+}
+.edit-container-content-body .personal-info > .col > div .course:hover,
+.edit-container-content-body .school-details > .col > div .course:hover,
+.edit-container-content-body .courses-offered > .col > div .course:hover {
+  background-color: rgba(240, 240, 240, 0.05);
+}
+.edit-container-content-body .personal-info .buttons,
+.edit-container-content-body .school-details .buttons,
+.edit-container-content-body .courses-offered .buttons {
+  justify-content: space-between;
+  gap: 3rem;
+  width: 100%;
+  display: flex;
+}
+.edit-container-content-body .personal-info .buttons button,
+.edit-container-content-body .school-details .buttons button,
+.edit-container-content-body .courses-offered .buttons button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  outline: none;
+  border: 1px solid transparent;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  cursor: pointer;
+}
+.edit-container-content-body .personal-info .buttons button.cancel-button,
+.edit-container-content-body .school-details .buttons button.cancel-button,
+.edit-container-content-body .courses-offered .buttons button.cancel-button {
+  background-color: transparent;
+  color: #FFFFFF;
+}
+.edit-container-content-body .personal-info .buttons button.cancel-button:hover,
+.edit-container-content-body .school-details .buttons button.cancel-button:hover,
+.edit-container-content-body .courses-offered .buttons button.cancel-button:hover {
+  background-color: #2C2C2C;
+}
+.edit-container-content-body .personal-info .buttons button.back-button,
+.edit-container-content-body .school-details .buttons button.back-button,
+.edit-container-content-body .courses-offered .buttons button.back-button {
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+}
+.edit-container-content-body .personal-info .buttons button.back-button:hover,
+.edit-container-content-body .school-details .buttons button.back-button:hover,
+.edit-container-content-body .courses-offered .buttons button.back-button:hover {
+  background-color: #2C2C2C;
+  border: 1px solid transparent;
+}
+.edit-container-content-body .personal-info .buttons button.next-button,
+.edit-container-content-body .school-details .buttons button.next-button,
+.edit-container-content-body .courses-offered .buttons button.next-button {
+  background-color: #F0F0F0;
+  color: #000000;
+}
+.edit-container-content-body .personal-info .no-course-found,
+.edit-container-content-body .school-details .no-course-found,
+.edit-container-content-body .courses-offered .no-course-found {
+  font-size: 14px;
+  color: #B3B3B3;
+  width: 100%;
+}
+.edit-container-content-body .picture-upload {
+  flex-grow: 1;
+  border: 1px solid #333333;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  padding: 2rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-direction: column;
+}
+.edit-container-content-body .picture-upload .upload {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 2rem;
+}
+@media (max-width: 475px) {
+  .edit-container-content-body .picture-upload .upload {
+    flex-direction: column;
+  }
+}
+.edit-container-content-body .picture-upload .upload .instructions {
+  flex-basis: 60%;
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 1rem;
+  flex-direction: column;
+}
+.edit-container-content-body .picture-upload .upload .instructions .heading {
+  font-size: 14px;
+  font-weight: 500;
+}
+.edit-container-content-body .picture-upload .upload .instructions .line {
+  width: 100%;
+  height: 1px;
+  background-color: #333333;
+}
+.edit-container-content-body .picture-upload .upload .instructions > div {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: stretch;
+}
+.edit-container-content-body .picture-upload .upload .instructions > div > p {
+  font-size: 14px;
+}
+.edit-container-content-body .picture-upload .upload .instructions > div ul {
+  width: 100%;
+  padding-left: 2rem;
+}
+.edit-container-content-body .picture-upload .upload .instructions > div ul > li {
+  font-size: 14px;
+  margin-bottom: 1rem;
+  list-style-type: disc;
+}
+.edit-container-content-body .picture-upload .upload .instructions > div .bolden {
+  font-size: 14px;
+  font-weight: bold;
+}
+.edit-container-content-body .picture-upload .upload .sample {
+  flex-basis: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.edit-container-content-body .picture-upload .upload .sample img {
+  max-width: 250px;
+}
+.edit-container-content-body .picture-upload .action {
+  width: 100%;
+  border: 1px dashed #333333;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
+.edit-container-content-body .picture-upload .action input[type=file] {
+  display: none;
+}
+.edit-container-content-body .picture-upload .action label {
+  cursor: pointer;
+  font-weight: 300;
+  font-size: 14px;
+}
+.edit-container-content-body .picture-upload .cropping,
+.edit-container-content-body .picture-upload .result {
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+}
+.edit-container-content-body .picture-upload .cropping img,
+.edit-container-content-body .picture-upload .result img {
+  width: 100%;
+}
+.edit-container-content-body .picture-upload .preview {
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+}
+.edit-container-content-body .picture-upload .preview button {
+  margin-top: 1.5rem;
+  width: 100%;
+  background-color: #F0F0F0;
+  color: #000000;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  outline: none;
+  border: 1px solid transparent;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  cursor: pointer;
+}
+.edit-container-content-body .picture-upload .buttons {
+  justify-content: space-between;
+  gap: 3rem;
+  width: 100%;
+  display: flex;
+}
+.edit-container-content-body .picture-upload .buttons button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  outline: none;
+  border: 1px solid transparent;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  cursor: pointer;
+}
+.edit-container-content-body .picture-upload .buttons button.cancel-button {
+  background-color: transparent;
+  color: #FFFFFF;
+}
+.edit-container-content-body .picture-upload .buttons button.cancel-button:hover {
+  background-color: #2C2C2C;
+}
+.edit-container-content-body .picture-upload .buttons button.back-button {
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+}
+.edit-container-content-body .picture-upload .buttons button.back-button:hover {
+  background-color: #2C2C2C;
+  border: 1px solid transparent;
+}
+.edit-container-content-body .picture-upload .buttons button.next-button {
+  background-color: #F0F0F0;
+  color: #000000;
+}
+.edit-container-content-body .error-label {
+  color: #FF5555;
+}
+.edit-container-content-body .error-input {
+  border: 1px solid #FF5555 !important;
+}

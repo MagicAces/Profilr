@@ -21,6 +21,7 @@ const initialState: ProfileState = {
     index_number: 0,
     reference_no: 0,
     program_id: 0,
+    image: "",
     course_ids: [],
   },
   courses: [],
@@ -76,6 +77,7 @@ const profileSlice = createSlice({
         reference_no: 0,
         program_id: 0,
         course_ids: [],
+        image: ""
       };
       state.courses = [];
       state.programs = [];

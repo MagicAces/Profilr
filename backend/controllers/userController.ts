@@ -2,9 +2,13 @@ import _ from "lodash";
 import generateToken from "../utils/generateToken";
 import asyncHandler from "express-async-handler";
 import prisma from "../prisma/prisma";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { StudentInput } from "../types/express";
 import { Gender } from "@prisma/client";
+import { utapi } from "../utils/uploadthing";
+import bufferToBlob, { base64ToBuffer } from "../utils/functs";
+import sharp from "sharp";
+import FormData from "form-data";
 
 // @desc    Auth user using Google
 // route    GET /api/users/auth/google
@@ -71,7 +75,29 @@ export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
 // route    GET /api/users/profile or POST /api/users/fetch
 // @access  Private
 export const getProfile = asyncHandler(async (req: Request, res: Response) => {
-  const user = { ...req.user };
+  const user_id = req?.user?.id;
+
+  if (!user_id) {
+    res.status(401);
+    throw new Error("You are not authenticated");
+  }
+  const user = await prisma.user.findUnique({
+    where: {
+      id: user_id,
+    },
+    include: {
+      student: {
+        include: {
+          program: true,
+          courses: {
+            include: {
+              program: true,
+            },
+          },
+        },
+      },
+    },
+  });
   res.status(200).json({ user });
 });
 
@@ -90,7 +116,7 @@ export const createProfile = asyncHandler(
       reference_no,
       course_ids,
       program_id,
-      image_url,
+      image,
       gender,
       phone_no,
     } = req.body as StudentInput;
@@ -114,7 +140,7 @@ export const createProfile = asyncHandler(
       (!index_number && !index_number.length) ||
       (!reference_no && !reference_no.length) ||
       (!program_id && !program_id?.length) ||
-      (!image_url && !image_url.length) ||
+      (!image && !image.length) ||
       !course_ids
     ) {
       res.status(400);
@@ -123,21 +149,7 @@ export const createProfile = asyncHandler(
       );
     }
 
-    let courses: string[] | number[] = course_ids;
-    if (!Array.isArray(course_ids)) {
-      if (course_ids) courses = [parseInt(course_ids)];
-      else {
-        res.status(400);
-        throw new Error(
-          "Incomplete student details. Please provide all required fields."
-        );
-      }
-    } else {
-      courses = courses
-        .filter((course_id) => course_id.length > 0)
-        .map((course_id) => parseInt(course_id));
-    }
-
+    let courses: number[] = course_ids.map((id) => Number(id));
     const existingStudent = await prisma.student.findFirst({
       where: {
         OR: [
@@ -154,9 +166,28 @@ export const createProfile = asyncHandler(
         "Student with the same index number, reference number, or email already exists"
       );
     }
+    const imageBuffer = base64ToBuffer(image);
+    const processedImage = await sharp(imageBuffer)
+      .resize(294, 412)
+      .jpeg({ quality: 82 })
+      .toBuffer();
 
-    // Create new student
-    const newStudent = await prisma.student.create({
+    const mimeType = "image/jpeg";
+
+    const file = new File(
+      [processedImage as BlobPart],
+      `${index_number}_${first_name}_${last_name}`,
+      {
+        type: mimeType,
+      }
+    );
+
+    const uploadResponse = await utapi.uploadFiles(file);
+
+    const image_url = uploadResponse.data?.url;
+    const image_key = uploadResponse.data?.key;
+
+    await prisma.student.create({
       data: {
         first_name,
         last_name,
@@ -167,6 +198,8 @@ export const createProfile = asyncHandler(
         reference_no: Number(reference_no),
         program_id: Number(program_id),
         user_id,
+        image_key: image_key ?? "",
+        image_url: image_url ?? "",
         gender: gender === "male" ? Gender.Male : Gender.Female,
         phone_no,
         courses: {
@@ -180,7 +213,6 @@ export const createProfile = asyncHandler(
 
     res.status(201).json({
       message: "Student profile created successfully",
-      student: newStudent,
     });
   }
 );
@@ -199,8 +231,8 @@ export const editProfile = asyncHandler(async (req: Request, res: Response) => {
     reference_no,
     course_ids,
     program_id,
-    image_url,
-  } = req.body;
+    image,
+  } = req.body as StudentInput;
   const { id: student_id } = req.params;
   const user_id = req?.user?.id;
 
@@ -209,20 +241,9 @@ export const editProfile = asyncHandler(async (req: Request, res: Response) => {
     throw new Error("Unauthorized Access");
   }
 
-  let courses = course_ids;
-  if (!Array.isArray(course_ids)) {
-    if (course_ids) courses = [parseInt(course_ids)];
-    else {
-      res.status(400);
-      throw new Error(
-        "Incomplete student details. Please provide all required fields."
-      );
-    }
-  } else {
-    courses = courses
-      .filter((course_id: string) => course_id.length > 0)
-      .map((course_id: string) => parseInt(course_id));
-  }
+  let courses: { id: number }[] = course_ids.map((id) => ({
+    id: Number(id),
+  }));
 
   const foundStudent = await prisma.student.findUnique({
     where: {
@@ -257,40 +278,79 @@ export const editProfile = asyncHandler(async (req: Request, res: Response) => {
     );
   }
 
+  let upload = true;
+  let new_image_url: undefined | string = "";
+  let new_image_key: undefined | string = "";
+  if (
+    image.length > 0 &&
+    (image.includes("https://") || image === foundStudent.image_url)
+  ) {
+    upload = false;
+  }
+
+  if (image.length > 0 && upload) {
+    const imageBuffer = base64ToBuffer(image);
+    const processedImage = await sharp(imageBuffer)
+      .resize(294, 412)
+      .jpeg({ quality: 82 })
+      .toBuffer();
+
+    const mimeType = "image/jpeg";
+
+    const file = new File(
+      [processedImage as BlobPart],
+      `${index_number}_${first_name}_${last_name}`,
+      {
+        type: mimeType,
+      }
+    );
+
+    const uploadResponse = await utapi.uploadFiles(file);
+    await utapi.deleteFiles(foundStudent.image_key);
+
+    new_image_url = uploadResponse.data?.url;
+    new_image_key = uploadResponse.data?.key;
+  }
+
   const updatedStudent = await prisma.student.update({
     where: {
       id: parseInt(student_id),
     },
     data: {
       first_name:
-        first_name && first_name.length
+        first_name && first_name.length > 0
           ? first_name.trim()
           : foundStudent.first_name,
       last_name:
-        last_name && last_name.length
+        last_name && last_name.length > 0
           ? last_name.trim()
           : foundStudent.last_name,
       other_name: other_name || foundStudent?.other_name,
-      email: email && email.length ? email.trim() : foundStudent.email,
-      level: level && level.length ? Number(level.trim()) : foundStudent.level,
+      email: email && email.length > 0 ? email.trim() : foundStudent.email,
+      level:
+        level && level.length > 0 ? Number(level.trim()) : foundStudent.level,
       index_number:
-        index_number && index_number.length
+        index_number && index_number.length > 0
           ? Number(index_number.trim())
           : foundStudent.index_number,
       reference_no:
-        reference_no && reference_no.length
+        reference_no && reference_no.length > 0
           ? Number(reference_no.trim())
           : foundStudent.reference_no,
       program_id:
-        program_id && program_id.length
-          ? program_id.trim()
+        program_id && program_id.length > 0
+          ? Number(program_id.trim())
           : foundStudent.program_id,
       image_url:
-        image_url && image_url.length ? image_url : foundStudent.image_url,
+        upload && image.length > 0
+          ? new_image_url ?? ""
+          : foundStudent.image_url,
+      image_key:
+        upload && image.length > 0
+          ? new_image_key ?? ""
+          : foundStudent.image_key,
       courses: {
-        connect: courses.map((id: number) => {
-          id;
-        }),
+        set: courses,
       },
     },
   });

@@ -6,6 +6,8 @@ import { useGetProfileQuery } from "../redux/features/user/userApiSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../redux/features/auth/authSlice";
+import Loader from "../components/Utils/Loader";
+import { clearProfile } from "../redux/features/profile/profileSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -14,24 +16,29 @@ const Home = () => {
     error: userError,
     isLoading: userLoading,
   } = useGetProfileQuery(null, {
-    pollingInterval: 10 * 1000,
-    skipPollingIfUnfocused: true,
+    pollingInterval: 5 * 1000,
     refetchOnReconnect: true,
   });
 
   useEffect(() => {
     if (!userLoading && !userError && user)
       dispatch(setCredentials(user?.user));
-  }, [dispatch, userLoading, userError]);
+  }, [dispatch, userLoading, userError, user]);
+
+  useEffect(() => {
+    dispatch(clearProfile());
+  }, []);
+  
 
   return (
     <>
       <Starfield
         starCount={1500}
         starColor={[138, 138, 138]}
-        speedFactor={0.2}
-        backgroundColor="#121212"
+        speedFactor={0.37}
+        backgroundColor="black"
       />
+        {userLoading && <Loader />}
       <div className="home-container">
         <Navbar />
         <Content />

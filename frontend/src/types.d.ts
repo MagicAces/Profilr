@@ -18,6 +18,7 @@ export interface StudentInput {
   reference_no: number;
   program_id: number;
   course_ids: number[];
+  image: string;
 }
 export interface Program {
   id: number;

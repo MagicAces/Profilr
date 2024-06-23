@@ -1,10 +1,11 @@
 html,
 body {
-  background-color: transparent;
+  background-color: #121212;
   color: #FFFFFF;
   font-family: "Roboto", sans-serif;
   min-height: 100vh;
   width: 100vw;
+  overflow-x: hidden;
 }
 
 input {
@@ -25,6 +26,10 @@ input:focus {
   border-color: #F0F0F0;
 }
 
+button {
+  font-family: "Roboto", sans-serif;
+}
+
 .login-container {
   width: 100%;
   min-height: 100vh;
@@ -36,6 +41,11 @@ input:focus {
   align-items: stretch;
   gap: 3rem;
   background-color: #121212;
+}
+@media (max-width: 570px) {
+  .login-container {
+    padding: 1.5rem;
+  }
 }
 .login-container-logo {
   width: 100%;

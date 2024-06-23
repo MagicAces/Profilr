@@ -192,7 +192,7 @@ const Course = () => {
                     highlightColor="#444444"
                     className={"course"}
                     height={90}
-                    width={250}
+                    width={250}        
                     style={{
                       borderRadius: "0.5rem",
                       // marginTop: "0.5rem",

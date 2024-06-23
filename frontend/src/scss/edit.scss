@@ -1,6 +1,6 @@
 @import 'config';
 
-.create-container {
+.edit-container {
     width: 100vw;
     min-height: 100vh;
     padding: 2.5rem;
@@ -340,6 +340,11 @@
                     text-align: center;
                     border-top: 1px solid $light-border;
                     border-bottom: 1px solid $light-border;
+
+
+                    img {
+                        width: 100%;
+                    }
 
                 }
 

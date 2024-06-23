@@ -28,6 +28,6 @@ router.post("/logout", user.logoutUser);
 
 router.get("/profile", protect, user.getProfile);
 router.post("/profile", protect, user.createProfile);
-router.put("/profile", protect, user.editProfile);
+router.put("/profile/:id", protect, user.editProfile);
 
 export default router;

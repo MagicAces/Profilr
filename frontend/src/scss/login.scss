@@ -11,7 +11,11 @@
     align-items: stretch;
     gap: 3rem;
     background-color: $secondary-background;
-    
+
+
+    @media (max-width: 570px) {
+        padding: 1.5rem;
+    }
 
     &-logo {
         width: 100%;

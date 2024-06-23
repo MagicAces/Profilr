@@ -1,10 +1,11 @@
 html,
 body {
-  background-color: transparent;
+  background-color: #121212;
   color: #FFFFFF;
   font-family: "Roboto", sans-serif;
   min-height: 100vh;
   width: 100vw;
+  overflow-x: hidden;
 }
 
 input {
@@ -25,6 +26,10 @@ input:focus {
   border-color: #F0F0F0;
 }
 
+button {
+  font-family: "Roboto", sans-serif;
+}
+
 .create-container {
   width: 100vw;
   min-height: 100vh;
@@ -36,6 +41,11 @@ input:focus {
   align-items: stretch;
   gap: 2.5rem;
   background-color: #121212;
+}
+@media (max-width: 570px) {
+  .create-container {
+    padding: 1.5rem;
+  }
 }
 .create-container-content {
   flex-grow: 1;
@@ -93,6 +103,13 @@ input:focus {
   justify-content: flex-start;
   align-items: stretch;
   gap: 2rem;
+}
+@media (max-width: 475px) {
+  .create-container-content-body .personal-info > .row,
+  .create-container-content-body .school-details > .row,
+  .create-container-content-body .courses-offered > .row {
+    flex-direction: column;
+  }
 }
 .create-container-content-body .personal-info > .row > div,
 .create-container-content-body .school-details > .row > div,
@@ -171,6 +188,14 @@ input:focus {
   gap: 1.5rem;
   align-items: center;
   transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+}
+@media (max-width: 475px) {
+  .create-container-content-body .personal-info > .col > div > div.course,
+  .create-container-content-body .school-details > .col > div > div.course,
+  .create-container-content-body .courses-offered > .col > div > div.course {
+    flex-grow: 1;
+    justify-content: space-between;
+  }
 }
 .create-container-content-body .personal-info > .col > div > div.course > div,
 .create-container-content-body .school-details > .col > div > div.course > div,
@@ -254,6 +279,156 @@ input:focus {
   font-size: 14px;
   color: #B3B3B3;
   width: 100%;
+}
+.create-container-content-body .picture-upload {
+  flex-grow: 1;
+  border: 1px solid #333333;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  padding: 2rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-direction: column;
+}
+.create-container-content-body .picture-upload .upload {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 2rem;
+}
+@media (max-width: 475px) {
+  .create-container-content-body .picture-upload .upload {
+    flex-direction: column;
+  }
+}
+.create-container-content-body .picture-upload .upload .instructions {
+  flex-basis: 60%;
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 1rem;
+  flex-direction: column;
+}
+.create-container-content-body .picture-upload .upload .instructions .heading {
+  font-size: 14px;
+  font-weight: 500;
+}
+.create-container-content-body .picture-upload .upload .instructions .line {
+  width: 100%;
+  height: 1px;
+  background-color: #333333;
+}
+.create-container-content-body .picture-upload .upload .instructions > div {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: stretch;
+}
+.create-container-content-body .picture-upload .upload .instructions > div > p {
+  font-size: 14px;
+}
+.create-container-content-body .picture-upload .upload .instructions > div ul {
+  width: 100%;
+  padding-left: 2rem;
+}
+.create-container-content-body .picture-upload .upload .instructions > div ul > li {
+  font-size: 14px;
+  margin-bottom: 1rem;
+  list-style-type: disc;
+}
+.create-container-content-body .picture-upload .upload .instructions > div .bolden {
+  font-size: 14px;
+  font-weight: bold;
+}
+.create-container-content-body .picture-upload .upload .sample {
+  flex-basis: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.create-container-content-body .picture-upload .upload .sample img {
+  max-width: 250px;
+}
+.create-container-content-body .picture-upload .action {
+  width: 100%;
+  border: 1px dashed #333333;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
+.create-container-content-body .picture-upload .action input[type=file] {
+  display: none;
+}
+.create-container-content-body .picture-upload .action label {
+  cursor: pointer;
+  font-weight: 300;
+  font-size: 14px;
+}
+.create-container-content-body .picture-upload .cropping,
+.create-container-content-body .picture-upload .result {
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+}
+.create-container-content-body .picture-upload .preview {
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+}
+.create-container-content-body .picture-upload .preview button {
+  margin-top: 1.5rem;
+  width: 100%;
+  background-color: #F0F0F0;
+  color: #000000;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  outline: none;
+  border: 1px solid transparent;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  cursor: pointer;
+}
+.create-container-content-body .picture-upload .buttons {
+  justify-content: space-between;
+  gap: 3rem;
+  width: 100%;
+  display: flex;
+}
+.create-container-content-body .picture-upload .buttons button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  outline: none;
+  border: 1px solid transparent;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  cursor: pointer;
+}
+.create-container-content-body .picture-upload .buttons button.cancel-button {
+  background-color: transparent;
+  color: #FFFFFF;
+}
+.create-container-content-body .picture-upload .buttons button.cancel-button:hover {
+  background-color: #2C2C2C;
+}
+.create-container-content-body .picture-upload .buttons button.back-button {
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+}
+.create-container-content-body .picture-upload .buttons button.back-button:hover {
+  background-color: #2C2C2C;
+  border: 1px solid transparent;
+}
+.create-container-content-body .picture-upload .buttons button.next-button {
+  background-color: #F0F0F0;
+  color: #000000;
 }
 .create-container-content-body .error-label {
   color: #FF5555;

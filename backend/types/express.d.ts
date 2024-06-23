@@ -17,7 +17,7 @@ interface StudentInput {
   index_number: string;
   reference_no: string;
   course_ids: string[];
-  image_url: string;
+  image: string;
   gender: string;
   phone_no: string;
 }

@@ -9,12 +9,12 @@ const Content = () => {
   const { phase } = useSelector((state: any) => state.profile);
   return (
     <>
-      <div className="create-container-content">
-        <div className="create-container-content-header">
-          <h3>Create Student Profile</h3>
+      <div className="edit-container-content">
+        <div className="edit-container-content-header">
+          <h3>Edit Student Profile</h3>
           <span>Genuinely fill out the details</span>
         </div>
-        <div className="create-container-content-body">
+        <div className="edit-container-content-body">
           <Progress />
           {phase === 1 && <Personal />}
           {phase === 2 && <School />}
