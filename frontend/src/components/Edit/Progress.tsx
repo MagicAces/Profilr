@@ -1,13 +1,13 @@
 import { useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setPhase } from "../../redux/features/profile/profileSlice";
+import { useSelector } from "react-redux";
+// import { setPhase } from "../../redux/features/profile/profileSlice";
 
 import "../../css/progress.css";
 
 const Progress = () => {
   const { phase } = useSelector((state: any) => state.profile);
   const stepsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const steps = [
     "Personal Info",
@@ -32,7 +32,7 @@ const Progress = () => {
             <div
               ref={(el) => (stepsRef.current[1] = el)}
               className={`step ${phase === 1 ? "active" : ""}`}
-              onClick={() => dispatch(setPhase(1))}
+              // onClick={() => dispatch(setPhase(1))}
             >
               1
             </div>
@@ -40,7 +40,7 @@ const Progress = () => {
             <div
               ref={(el) => (stepsRef.current[2] = el)}
               className={`step ${phase === 2 ? "active" : ""}`}
-              onClick={() => dispatch(setPhase(2))}
+              // onClick={() => dispatch(setPhase(2))}
             >
               2
             </div>
@@ -48,7 +48,7 @@ const Progress = () => {
             <div
               ref={(el) => (stepsRef.current[3] = el)}
               className={`step ${phase === 3 ? "active" : ""}`}
-              onClick={() => dispatch(setPhase(3))}
+              // onClick={() => dispatch(setPhase(3))}
             >
               3
             </div>
@@ -56,7 +56,7 @@ const Progress = () => {
             <div
               ref={(el) => (stepsRef.current[4] = el)}
               className={`step ${phase === 4 ? "active" : ""}`}
-              onClick={() => dispatch(setPhase(4))}
+              // onClick={() => dispatch(setPhase(4))}
             >
               4
             </div>
@@ -67,7 +67,7 @@ const Progress = () => {
                 key={index}
                 ref={(el) => (stepsRef.current[index + 1] = el)}
                 className={`step-text ${phase === index + 1 ? "active" : ""}`}
-                onClick={() => dispatch(setPhase(index + 1))}
+                // onClick={() => dispatch(setPhase(index + 1))}
               >
                 {step}
               </div>

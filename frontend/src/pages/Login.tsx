@@ -67,7 +67,7 @@ const Login = () => {
         starCount={3000}
         starColor={[138, 138, 138]}
         speedFactor={0.2}
-        backgroundColor="#121212"
+        backgroundColor="black"
       />
       {(loader || isLoading) && <Loader curved={false} />}
       <div className="login-container">

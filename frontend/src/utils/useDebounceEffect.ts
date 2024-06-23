@@ -1,13 +1,13 @@
-import { useEffect, DependencyList } from "react";
+import { useEffect } from "react";
 
 export function useDebounceEffect(
   fn: () => void,
   waitTime: number,
-  deps?: DependencyList
+  deps?: any
 ) {
   useEffect(() => {
     const t = setTimeout(() => {
-      fn.apply(undefined, deps);
+      fn.apply(undefined, deps || []);
     }, waitTime);
 
     return () => {

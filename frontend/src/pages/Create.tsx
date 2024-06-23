@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useGetProgramsQuery } from "../redux/features/profile/profileApiSlice";
 import { useEffect } from "react";
-import { clearProfile, setPrograms } from "../redux/features/profile/profileSlice";
+import {
+  setPrograms,
+} from "../redux/features/profile/profileSlice";
 import Content from "../components/Create/Content";
 import Navbar from "../components/Navbar";
 import Starfield from "react-starfield";
@@ -26,10 +28,6 @@ const Create = () => {
     if (!programsLoading && !programsError && programs)
       dispatch(setPrograms(programs?.programs));
   }, [dispatch, programsLoading, programsError]);
-
-  useEffect(() => {
-    dispatch(clearProfile());
-  }, []);
 
   return (
     <>

@@ -4,11 +4,12 @@ import Default from "./Default";
 
 const Content = () => {
   const { userInfo } = useSelector((state: any) => state.auth);
+  const { loading } = useSelector((state: any) => state.profile);
 
   return (
     <>
       <div className="home-container-content">
-        {userInfo?.student ? <Student /> : <Default />}
+        {!loading && !userInfo?.student ? <Default /> : <Student />}
       </div>
     </>
   );

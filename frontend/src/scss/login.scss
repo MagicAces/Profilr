@@ -45,10 +45,18 @@
             font-weight: 500;
         }
 
+        @media (max-width: 475px) {
+            &>p {
+                font-size: 22px;
+            }
+
+            &>button{
+                font-size: 15px;
+            }
+        }
         &>button {
             background-color: $accent-color;
             color: $primary-background;
-            border: none;
             border-radius: 0.8rem;
             padding: 0.8rem 1.5rem;
             font-size: 18px;

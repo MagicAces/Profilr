@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { useGetProgramsQuery } from "../redux/features/profile/profileApiSlice";
 import { useEffect } from "react";
 import {
-  clearProfile,
   fillStudent,
   setPrograms,
 } from "../redux/features/profile/profileSlice";
@@ -41,7 +40,7 @@ const Edit = () => {
 
   useEffect(() => {
     if (!userLoading && userError) {
-      toast.error("Error Fetching User");
+      toast.error("Error Fetching User", { toastId: "E4" });
       navigate("/");
     }
     if (!userLoading && !userError && user) {
@@ -73,10 +72,6 @@ const Edit = () => {
     if (!programsLoading && !programsError && programs)
       dispatch(setPrograms(programs?.programs));
   }, [dispatch, programsLoading, programsError]);
-
-  useEffect(() => {
-    dispatch(clearProfile());
-  }, []);
 
   return (
     <>

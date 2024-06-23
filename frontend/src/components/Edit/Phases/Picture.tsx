@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import sample from "../../../assets/sample.png";
 import { toast } from "react-toastify";
 import {
+  clearProfile,
   fillStudent,
   setPhase,
 } from "../../../redux/features/profile/profileSlice";
@@ -22,6 +23,7 @@ import { StudentInput } from "../../../types";
 import { useNavigate } from "react-router";
 import { useUpdateProfileMutation } from "../../../redux/features/user/userApiSlice";
 import { isEqual } from "lodash";
+import { apiSlice } from "../../../redux/features/apiSlice";
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -155,7 +157,7 @@ const Picture = () => {
 
       if (facesDetected > 1) {
         setLoader(false);
-        toast.error(`Multiple faces ${facesDetected} detected`);
+        toast.error(`Multiple faces (${facesDetected}) detected`);
         return;
       }
       dispatch(fillStudent({ ...student, image: await blobToBase64(blob) }));
@@ -235,6 +237,7 @@ const Picture = () => {
     if (notEdited()) {
       toast.info("No changes made");
       navigate("/");
+      dispatch(clearProfile());
       return;
     }
 
@@ -245,6 +248,8 @@ const Picture = () => {
       }).unwrap();
       toast.success(res.message);
       navigate("/");
+      dispatch(clearProfile());
+      dispatch(apiSlice.util.resetApiState());
     } catch (error: any) {
       toast.error((error?.data?.message as string) || (error?.error as string));
     }
@@ -293,7 +298,7 @@ const Picture = () => {
             <input
               id="inputTag"
               type="file"
-              accept=".jpg, .jpeg, .png"
+              accept=".jpg, .png, .jpeg"
               onChange={onSelectFile}
               capture="environment"
             />

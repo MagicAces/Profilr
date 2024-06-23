@@ -4,12 +4,13 @@ import Starfield from "react-starfield";
 import "../css/home.css";
 import { useGetProfileQuery } from "../redux/features/user/userApiSlice";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../redux/features/auth/authSlice";
 import Loader from "../components/Utils/Loader";
-import { clearProfile } from "../redux/features/profile/profileSlice";
+import { setLoading } from "../redux/features/profile/profileSlice";
 
 const Home = () => {
+  const { loading } = useSelector((state: any) => state.profile);
   const dispatch = useDispatch();
   const {
     data: user,
@@ -19,16 +20,13 @@ const Home = () => {
     pollingInterval: 5 * 1000,
     refetchOnReconnect: true,
   });
-
+  
   useEffect(() => {
+    
+    dispatch(setLoading(userLoading));
     if (!userLoading && !userError && user)
       dispatch(setCredentials(user?.user));
   }, [dispatch, userLoading, userError, user]);
-
-  useEffect(() => {
-    dispatch(clearProfile());
-  }, []);
-  
 
   return (
     <>
@@ -38,7 +36,7 @@ const Home = () => {
         speedFactor={0.37}
         backgroundColor="black"
       />
-        {userLoading && <Loader />}
+      {(userLoading || loading) && <Loader />}
       <div className="home-container">
         <Navbar />
         <Content />

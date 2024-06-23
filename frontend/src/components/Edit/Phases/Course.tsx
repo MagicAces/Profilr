@@ -117,13 +117,14 @@ const Course = () => {
           <div className="line"></div>
           {coursesLoading ? (
             <div className="compulsory-values">
-              {new Array(5).fill("").map((_) => (
+              {new Array(5).fill("").map((_, index: number) => (
                 <>
                   <Skeleton
+                    key={index}
                     baseColor="#2C2C2C"
                     highlightColor="#444444"
                     className={"course"}
-                    height={90}
+                    height={80}
                     width={250}
                     style={{
                       borderRadius: "0.5rem",
@@ -141,9 +142,9 @@ const Course = () => {
               ).length > 0 ? (
                 courses
                   .filter((course: CourseType) => course?.type === "Compulsory")
-                  .map((course: CourseType) => (
+                  .map((course: CourseType, index: number) => (
                     <>
-                      <div className="course">
+                      <div key={index} className="course">
                         <div className="course-left">
                           <span>
                             {course?.code} <span>({course?.credit})</span>
@@ -185,14 +186,15 @@ const Course = () => {
           <div className="line"></div>
           {coursesLoading ? (
             <div className="elective-values">
-              {new Array(5).fill("").map((_) => (
+              {new Array(5).fill("").map((_, index: number) => (
                 <>
                   <Skeleton
+                    key={index}
                     baseColor="#2C2C2C"
                     highlightColor="#444444"
                     className={"course"}
-                    height={90}
-                    width={250}        
+                    height={80}
+                    width={260}
                     style={{
                       borderRadius: "0.5rem",
                       // marginTop: "0.5rem",
@@ -209,9 +211,9 @@ const Course = () => {
               ).length > 0 ? (
                 courses
                   .filter((course: CourseType) => course?.type === "Elective")
-                  .map((course: CourseType) => (
+                  .map((course: CourseType, index: number) => (
                     <>
-                      <div className="course">
+                      <div key={index} className="course">
                         <div className="course-left">
                           <span>
                             {course?.code} <span>({course?.credit})</span>

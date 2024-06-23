@@ -11,7 +11,6 @@
   box-sizing: border-box;
 }
 
-
 button.disabled {
   cursor: none;
   filter: opacity(0.6);
@@ -37,6 +36,7 @@ button.disabled {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #121212;
 }
 
 .hide-scrollbar {

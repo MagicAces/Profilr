@@ -22,6 +22,7 @@ import { blobToBase64 } from "../../../utils/funct";
 import { StudentInput } from "../../../types";
 import { useNavigate } from "react-router";
 import { useCreateProfileMutation } from "../../../redux/features/user/userApiSlice";
+import { apiSlice } from "../../../redux/features/apiSlice";
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -151,7 +152,7 @@ const Picture = () => {
 
       if (facesDetected > 1) {
         setLoader(false);
-        toast.error(`Multiple faces ${facesDetected} detected`);
+        toast.error(`Multiple faces (${facesDetected}) detected`);
         return;
       }
       dispatch(fillStudent({ ...student, image: await blobToBase64(blob) }));
@@ -208,6 +209,7 @@ const Picture = () => {
       toast.success(res.message);
       navigate("/", { replace: true });
       dispatch(clearProfile());
+      dispatch(apiSlice.util.resetApiState());
     } catch (error: any) {
       toast.error((error?.data?.message as string) || (error?.error as string));
     }
@@ -256,7 +258,7 @@ const Picture = () => {
             <input
               id="inputTag"
               type="file"
-              accept=".jpg, .jpeg, .png"
+              accept=".jpg, .png, .jpeg"
               onChange={onSelectFile}
               capture="environment"
             />

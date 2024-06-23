@@ -31,6 +31,7 @@ const initialState: ProfileState = {
     program_id: 0,
     semester: 0,
   },
+  loading: false
 };
 
 const profileSlice = createSlice({
@@ -62,6 +63,9 @@ const profileSlice = createSlice({
         state.courseQuery[name] = value;
       }
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
     clearProfile: (state) => {
       state.phase = 1;
       state.student = {
@@ -86,6 +90,7 @@ const profileSlice = createSlice({
         semester: 0,
         program_id: 0,
       };
+      state.loading = false;
     },
   },
 });
@@ -96,6 +101,7 @@ export const {
   setPrograms,
   fillStudent,
   setCourseQuery,
+  setLoading,
   clearProfile,
 } = profileSlice.actions;
 

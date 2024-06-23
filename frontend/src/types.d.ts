@@ -4,6 +4,7 @@ export interface ProfileState {
   courses: Course[];
   programs: Program[];
   courseQuery: CourseQuery;
+  loading: boolean;
 }
 export interface StudentInput {
   first_name: string;

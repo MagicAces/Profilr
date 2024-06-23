@@ -1,8 +1,15 @@
+import Personal from "../View/Personal";
+import School from "../View/School";
 
 const Student = () => {
   return (
-    <div>Student</div>
-  )
-}
+    <>
+      <div className="student-container">
+        <Personal />
+        <School />
+      </div>
+    </>
+  );
+};
 
-export default Student
+export default Student;
