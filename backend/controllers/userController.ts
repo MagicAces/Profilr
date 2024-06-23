@@ -18,7 +18,7 @@ export const authGoogle = asyncHandler(async (req: Request, res: Response) => {
   if (req.user && req.user.id) {
     // Successful authentication, redirect home.
     generateToken(res, req.user.id.toString());
-    res.redirect(`${process.env.CLIENT_URL}/success`);
+    res.redirect(`${process.env.CLIENT_URL}`);
   } else {
     res.status(400).json({ message: "User not authenticated" });
   }

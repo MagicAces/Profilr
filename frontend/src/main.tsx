@@ -20,10 +20,12 @@ import Success from "./pages/Success.tsx";
 import Failure from "./pages/Failure.tsx";
 import Create from "./pages/Create.tsx";
 import Edit from "./pages/Edit.tsx";
+import Error from "./components/Error.tsx";
+import NotFound from "./components/NotFound.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route path="/" element={<App />} errorElement={<Error />}>
       <Route path="/login" element={<Login />} />
       <Route path="/success" element={<Success />} />
       <Route path="/failure" element={<Failure />} />
@@ -33,6 +35,7 @@ const router = createBrowserRouter(
         <Route path="/create" element={<Create />} />
         <Route path="/edit" element={<Edit />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );
@@ -40,7 +43,7 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     {/* <React.StrictMode> */}
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
     {/* </React.StrictMode> */}
   </Provider>
 );

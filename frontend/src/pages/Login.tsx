@@ -43,25 +43,28 @@ const Login = () => {
 
   const handleClick = () => {
     setLoader(true);
-    console.log(`${import.meta.env.VITE_SERVER_URL}/${AUTH_URL}`);
 
-    const newWindow = window.open(
-      `${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`,
-      "_blank",
-      "width=700,height=800"
-    );
+    // const newWindow = window.open(
+    //   `${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`,
+    //   "_blank",
+    //   "width=700,height=800"
+    // );
 
-    if (newWindow) {
-      const timer = setInterval(async () => {
-        if (newWindow.closed) {
-          setSkip(false);
-          setLoader(false);
-          if (timer) {
-            clearInterval(timer);
-          }
-        }
-      }, 1000);
-    }
+    // if (newWindow) {
+    //   const timer = setInterval(async () => {
+    //     if (newWindow.closed) {
+    // setSkip(false);
+    // setLoader(false);
+    //       if (timer) {
+    //         clearInterval(timer);
+    //       }
+    //     }
+    //   }, 1000);
+    // }
+    window.open(`${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`, "_self");
+
+    setSkip(false);
+    setLoader(false);
   };
 
   if (userInfo) return null;
