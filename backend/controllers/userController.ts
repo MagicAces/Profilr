@@ -18,7 +18,9 @@ export const authGoogle = asyncHandler(async (req: Request, res: Response) => {
     generateToken(res, req.user.id.toString());
     res.redirect(`${process.env.CLIENT_URL}/login?auth-success=true`);
   } else {
-    res.redirect(`${process.env.CLIENT_URL}/login?error=User not authenticated`);
+    res.redirect(
+      `${process.env.CLIENT_URL}/login?error=User not authenticated`
+    );
   }
 });
 // @desc    Handle OAuth Failures
@@ -66,6 +68,10 @@ export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
     }
     res.status(200).json({ message: "Successfully logged out" });
   });
+});
+
+export const testRoute = asyncHandler(async (req: Request, res: Response) => {
+  res.status(200).json({ name: "3223" });
 });
 
 // @desc    Get user profile

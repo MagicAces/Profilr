@@ -70,15 +70,7 @@ passport.deserializeUser((user, cb) => {
   cb(null, user as User);
 });
 
-app.use(
-  "/api/users",
-  (req: Request, res: Response, next: NextFunction) => {
-    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-    next();
-  },
-  userRouter
-);
+app.use("/api/users", userRouter);
 app.use("/api/programs", programRouter);
 app.use("/api/courses", courseRouter);
 

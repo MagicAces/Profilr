@@ -14,6 +14,7 @@ router.get(
   passport.authenticate("google", { scope: ["profile", "email", "openid"] })
 );
 
+router.get("/",user.testRoute)
 router.get(
   "/auth/google/welcome",
   passport.authenticate("google", {
