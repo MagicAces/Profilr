@@ -19,7 +19,6 @@ const App = () => {
     }
   }, [dispatch]);
 
-  console.log(import.meta.env.VITE_SERVEr_URL);
   return (
     <>
       <ToastContainer limit={1} transition={Zoom} theme="dark" />

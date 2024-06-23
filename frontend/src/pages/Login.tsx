@@ -43,8 +43,13 @@ const Login = () => {
 
   const handleClick = () => {
     setLoader(true);
+    console.log(`${import.meta.env.VITE_SERVER_URL}/${AUTH_URL}`);
 
-    const newWindow = window.open(AUTH_URL, "_blank", "width=700,height=800");
+    const newWindow = window.open(
+      `${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`,
+      "_blank",
+      "width=700,height=800"
+    );
 
     if (newWindow) {
       const timer = setInterval(async () => {
