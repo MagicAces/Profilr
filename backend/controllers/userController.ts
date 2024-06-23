@@ -204,7 +204,7 @@ export const createProfile = asyncHandler(
     const imageBuffer = base64ToBuffer(image);
     const processedImage = await sharp(imageBuffer)
       .resize(294, 412)
-      .jpeg({ quality: 82 })
+      .jpeg({ quality: 95 })
       .toBuffer();
 
     const mimeType = "image/jpeg";
@@ -327,7 +327,7 @@ export const editProfile = asyncHandler(async (req: Request, res: Response) => {
     const imageBuffer = base64ToBuffer(image);
     const processedImage = await sharp(imageBuffer)
       .resize(294, 412)
-      .jpeg({ quality: 82 })
+      .jpeg({ quality: 95 })
       .toBuffer();
 
     const mimeType = "image/jpeg";
