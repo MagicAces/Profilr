@@ -71,7 +71,7 @@ const Login = () => {
             clearInterval(timer);
           }
         }
-      }, 1000);
+      }, 1500);
     }
     // console.log(`${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`);
     // window.open(`${AUTH_URL}`, "_self");

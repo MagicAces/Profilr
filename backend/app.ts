@@ -24,11 +24,7 @@ const app = express();
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-  next();
-});
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -74,7 +70,15 @@ passport.deserializeUser((user, cb) => {
   cb(null, user as User);
 });
 
-app.use("/api/users", userRouter);
+app.use(
+  "/api/users",
+  (req: Request, res: Response, next: NextFunction) => {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+    next();
+  },
+  userRouter
+);
 app.use("/api/programs", programRouter);
 app.use("/api/courses", courseRouter);
 
