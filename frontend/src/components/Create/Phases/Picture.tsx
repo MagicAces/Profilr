@@ -64,7 +64,7 @@ const Picture = () => {
 
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = import.meta.env.VITE_PUBLIC_URL + "/models";
+      const MODEL_URL = "/models";
       Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),

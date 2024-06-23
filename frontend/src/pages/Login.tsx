@@ -37,6 +37,7 @@ const Login = () => {
         });
         navigate("/login");
       }
+      setLoader(false);
     };
 
     const params = new URLSearchParams(window.location.search);

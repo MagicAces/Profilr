@@ -69,14 +69,14 @@ const Picture = () => {
 
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = import.meta.env.VITE_PUBLIC_URL + "/models";
+      const MODEL_URL = "/models";
       Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
         faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-      ]);
+      ]).then(() => console.log("Hello"));
     };
 
     loadModels();
