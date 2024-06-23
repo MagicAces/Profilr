@@ -70,18 +70,18 @@ app.use("/api/users", userRouter);
 app.use("/api/programs", programRouter);
 app.use("/api/courses", courseRouter);
 
-if (process.env.NODE_ENV === "production") {
-  const __dirname = path.resolve();
-  app.use(express.static(path.join(__dirname, "frontend/dist")));
+// if (process.env.NODE_ENV === "production") {
+//   const __dirname = path.resolve();
+//   app.use(express.static(path.join(__dirname, "frontend/dist")));
 
-  app.get("*", (req: Request, res: Response) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-  });
-} else {
-  app.get("/", (req: Request, res: Response) => {
-    res.send("Server is up and running");
-  });
-}
+//   app.get("*", (req: Request, res: Response) => {
+//     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+//   });
+// } else {
+app.get("/", (req: Request, res: Response) => {
+  res.send("Server is up and running");
+});
+// }
 
 app.use(notFound);
 app.use(errorHandler);
