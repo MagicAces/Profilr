@@ -13,7 +13,7 @@ export const protect = asyncHandler(async (req, res, next) => {
 
       const user = await prisma.user.findUnique({
         where: {
-          id: Number(decoded.userId),
+          id: Number(decoded?.userId),
         },
         include: {
           student: {
@@ -21,10 +21,10 @@ export const protect = asyncHandler(async (req, res, next) => {
               program: true,
               courses: {
                 include: {
-                  program: true
-                }
-              }
-            }
+                  program: true,
+                },
+              },
+            },
           },
         },
       });

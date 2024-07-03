@@ -8,6 +8,7 @@ $input-background: #2C2C2C;
 $placeholder-text: #8A8A8A;
 $error-color: #FF5555;
 $success-color: #4CAF50;
+$pending-color: rgb(255, 208, 0);
 
 $light-border: #333333;
 $medium-border: #444444;
@@ -47,4 +48,438 @@ input {
 button {
     font-family: "Roboto",
         sans-serif;
+}
+
+.student-container {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 2rem;
+
+    &-personal {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: stretch;
+        align-items: stretch;
+        gap: 0.8rem;
+
+        &>.header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid $light-border;
+
+            h3.heading {
+                font-size: 20px;
+                width: 100%;
+            }
+
+            &>div {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+                justify-content: flex-start;
+
+
+                &>.status {
+                    padding: 0.4rem;
+                    border-radius: 0.3rem;
+                    background-color: $input-background;
+                    box-shadow: 0 4px 4px 0 $shadow-color;
+                    font-size: 10px;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.3rem;
+
+                    svg {
+                        font-size: 15px;
+                    }
+
+                    @media (max-width: 500px) {
+                        span {
+                            display: none;
+                        }
+                    }
+                }
+
+
+
+                &>.pending {
+                    color: $pending-color;
+                }
+
+                &>.approved {
+                    color: $success-color;
+                }
+
+                &>.rejected {
+                    color: $error-color;
+                }
+            }
+
+            .edit-link {
+                svg {
+                    font-size: 16px !important;
+                }
+
+                @media (max-width: 500px) {
+                    span {
+                        display: none;
+                    }
+
+                    width: fit-content;
+                }
+            }
+
+            a {
+                text-decoration: none;
+                width: 190px;
+                white-space: nowrap;
+                background-color: $accent-color;
+                color: $primary-background;
+                border-radius: 0.5rem;
+                padding: 0.75rem 1rem;
+                font-size: 14px;
+                outline: none;
+                box-shadow: 0 2px 4px $shadow-color;
+                cursor: pointer;
+                display: flex;
+                gap: 7px;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid transparent;
+                font-family: inherit;
+                transition: all ease-in-out 500ms;
+
+
+
+                &:hover,
+                &:active {
+                    background: transparent;
+                    color: $primary-text;
+                    border: 1px solid $light-border;
+                }
+            }
+
+            .action-buttons {
+                display: flex;
+                gap: 1rem;
+
+
+                button {
+                    padding: 0.5rem 1rem;
+                    border-radius: 0.3rem;
+                    outline: none;
+                    border: 1px solid transparent;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    cursor: pointer;
+                    display: flex;
+                    gap: 0.3rem;
+                    align-items: center;
+                    font-size: 13px;
+                    font-family: inherit !important;
+
+                    svg {
+                        font-size: 16px;
+                    }
+
+                    @media (max-width: 550px) {
+                        span {
+                            display: none;
+                        }
+
+                        svg {
+                            font-size: 14px;
+                        }
+
+                        padding: 0.5rem 0.7rem;
+                    }
+                }
+
+                button.home-button {
+                    background-color: $accent-color;
+                    color: $primary-background;
+                }
+
+                button.home-button:hover {
+                    background-color: transparent;
+                    color: $primary-text;
+                    border: 1px solid $light-border;
+                }
+
+                button.approve-button {
+                    background-color: $success-color;
+                    color: $primary-text;
+                }
+
+                button.approve-button:hover {
+                    background-color: transparent;
+                    border: 1px solid $success-color;
+                }
+
+                button.reject-button {
+                    background-color: $error-color;
+                    color: $primary-text;
+                }
+
+                button.reject-button:hover {
+                    background-color: transparent;
+                    border: 1px solid $error-color;
+                }
+            }
+        }
+
+
+        .body {
+            display: flex;
+            width: 100%;
+            border: 1px solid $light-border;
+            padding: 1.5rem 2rem;
+            gap: 4rem;
+            align-items: center;
+            justify-content: flex-start;
+            border-radius: 0.5rem;
+
+            @media (max-width: 725px) {
+                flex-direction: column;
+                gap: 2rem;
+
+                &>div {
+                    flex-basis: 100%;
+                    width: 100%;
+                }
+            }
+
+            &-left {
+                flex-basis: 35%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    border-radius: 0.6rem;
+                    width: 95%;
+                    min-width: 200px;
+
+                    @media (max-width: 725px) {
+
+                        max-width: 220px;
+                    }
+                }
+            }
+
+            &-right {
+                display: flex;
+                flex-grow: 1;
+                flex-basis: 65%;
+                align-items: stretch;
+                justify-content: space-between;
+                flex-direction: column;
+                gap: 2rem;
+
+                &>.row {
+                    width: 100%;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: stretch;
+                    gap: 2rem;
+
+                    @media (max-width: 500px) {
+                        flex-direction: column;
+                    }
+
+                    &>div {
+                        flex-basis: 50%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: stretch;
+                        align-items: stretch;
+                        gap: 0.5rem;
+                        min-width: 150px;
+
+                        span {
+                            display: flex;
+                            align-items: center;
+                            font-weight: 500;
+                            font-size: 13px;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                        }
+
+                        p {
+                            font-weight: 300;
+                            font-size: 13px;
+                            width: 100%;
+                            padding: 0.5rem;
+                            border: 1px solid $medium-border;
+                            border-radius: 0.5rem;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    &-school {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: stretch;
+        align-items: stretch;
+        gap: 0.8rem;
+
+        &>h3.heading {
+            font-size: 20px;
+            width: 100%;
+        }
+
+        .line {
+            width: 100%;
+            background-color: $light-border;
+            height: 1px;
+        }
+
+        .body {
+            display: flex;
+            width: 100%;
+            border: 1px solid $light-border;
+            padding: 1.5rem 2rem;
+            gap: 2rem;
+            align-items: center;
+            justify-content: flex-start;
+            border-radius: 0.5rem;
+            flex-direction: column;
+
+            &>.row {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: stretch;
+                gap: 2rem;
+
+                @media (max-width: 500px) {
+                    flex-direction: column;
+                }
+
+                &>div {
+                    flex-basis: 50%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: stretch;
+                    align-items: stretch;
+                    gap: 0.5rem;
+                    min-width: 150px;
+
+                    span {
+                        display: flex;
+                        align-items: center;
+                        font-weight: 500;
+                        font-size: 13px;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    }
+
+                    p {
+                        font-weight: 300;
+                        font-size: 13px;
+                        width: 100%;
+                        padding: 0.5rem;
+                        border: 1px solid $medium-border;
+                        border-radius: 0.5rem;
+                    }
+
+                }
+            }
+
+            &>.courses-section {
+                width: 100%;
+                display: flex;
+                justify-content: stretch;
+                align-items: stretch;
+                gap: 0.6rem;
+                flex-direction: column;
+
+                .heading {
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+
+                .line {
+                    width: 100%;
+                    height: 1px;
+                    background-color: $light-border
+                }
+
+                &>.courses {
+                    width: 100%;
+                    display: flex;
+                    align-items: stretch;
+                    gap: 2rem;
+                    // flex-wrap: wrap;
+                    justify-content: flex-start;
+
+                    @media (max-width: 560px) {
+                        flex-direction: column;
+                    }
+
+                    &>div {
+                        flex-basis: 50%;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.5rem;
+
+
+                        &>.heading {
+                            font-weight: 300;
+                            font-size: 13px;
+                        }
+
+                        &>div {
+                            display: flex;
+                            gap: 0.5rem;
+                            flex-direction: column;
+                            align-items: stretch;
+                            justify-content: stretch;
+
+                            div.course {
+                                background-color: transparent;
+                                border: 1px solid $light-border;
+                                box-shadow: 0 4px 4px 0 $shadow-color;
+                                border-radius: 0.6rem;
+                                flex-direction: column;
+                                padding: 0.8rem;
+                                display: flex;
+                                gap: 1.2rem;
+                                align-items: stretch;
+                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+
+
+                                &>span:first-of-type {
+                                    font-size: 12px;
+                                    font-weight: 300;
+
+                                    span {
+                                        font-weight: bold;
+                                    }
+                                }
+
+                                &>span:last-of-type {
+                                    font-size: 14px;
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+        }
+    }
 }

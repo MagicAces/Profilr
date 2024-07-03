@@ -14,7 +14,7 @@ const NotFound = () => {
         starCount={50}
         starColor={[138, 138, 138]}
         speedFactor={0.5}
-        backgroundColor="#252529"
+        backgroundColor="black"
       />
       <div className="not-found">
         <div className="not-found-body">

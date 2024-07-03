@@ -30,7 +30,7 @@ button {
   font-family: "Roboto", sans-serif;
 }
 
-.student-container {
+.student-container, .student-view-container-content .student-container {
   flex-grow: 1;
   width: 100%;
   display: flex;
@@ -398,91 +398,29 @@ button {
   font-size: 14px;
 }
 
-.login-container {
-  width: 100%;
+.student-view-container {
+  width: 100vw;
   min-height: 100vh;
-  padding: 3rem 4rem 2rem;
+  padding: 2.5rem;
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: stretch;
   align-items: stretch;
-  gap: 3rem;
+  gap: 2.5rem;
   background-color: #121212;
 }
 @media (max-width: 570px) {
-  .login-container {
+  .student-view-container {
     padding: 1.5rem;
   }
 }
-.login-container-logo {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-}
-.login-container-logo img {
-  width: 120px;
-}
-.login-container-body {
+.student-view-container-content {
   flex-grow: 1;
-  flex-basis: 90%;
-  display: flex;
-  justify-content: center;
   width: 100%;
-  align-items: center;
-  gap: 1.5rem;
-  min-height: 350px;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
   flex-direction: column;
-}
-.login-container-body > p {
-  font-size: 30px;
-  font-weight: 500;
-}
-@media (max-width: 475px) {
-  .login-container-body > p {
-    font-size: 22px;
-  }
-  .login-container-body > button {
-    font-size: 15px;
-  }
-}
-.login-container-body > button {
-  background-color: #F0F0F0;
-  color: #000000;
-  border-radius: 0.8rem;
-  padding: 0.8rem 1.5rem;
-  font-size: 18px;
-  outline: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid transparent;
-  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-  font-family: inherit;
-}
-.login-container-body > button:hover, .login-container-body > button:active {
-  background: transparent;
-  color: #FFFFFF;
-  border: 1px solid #333333;
-}
-.login-container-body > button:disabled {
-  background-color: #B3B3B3;
-}
-.login-container-footer {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 1.5rem;
-}
-.login-container-footer > img {
-  width: 50px;
-}
-.login-container-footer img.securityShade {
-  border-radius: 50%;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
 }

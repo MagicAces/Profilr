@@ -4,11 +4,10 @@ import asyncHandler from "express-async-handler";
 import prisma from "../prisma/prisma";
 import { Request, Response } from "express";
 import { StudentInput } from "../types/express";
-import { Gender } from "@prisma/client";
+import { Gender, UserStatus } from "@prisma/client";
 import { utapi } from "../utils/uploadthing";
-import bufferToBlob, { base64ToBuffer } from "../utils/functs";
+import { base64ToBuffer } from "../utils/functs";
 import sharp from "sharp";
-import FormData from "form-data";
 
 // @desc    Auth user using Google
 // route    GET /api/users/auth/google
@@ -49,16 +48,19 @@ export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
     expires: new Date(0),
   });
 
-  console.log(req.body);
   if (!req.body || !req.body.id) {
     res.status(401).json({ message: " No Id Provided" });
     return;
   }
 
-  await prisma.user.update({
-    where: { id: req.body.id },
-    data: { lastLogin: new Date() },
-  });
+  try {
+    await prisma.user.update({
+      where: { id: req.body.id },
+      data: { lastLogin: new Date() },
+    });
+  } catch (error) {
+    throw new Error("Server Error");
+  }
 
   req.logout((err: Error) => {
     if (err) {
@@ -136,7 +138,7 @@ export const fetchProfile = asyncHandler(
   }
 );
 
-// @desc    CreateStudent's Profile
+// @desc    Create Student's Profile
 // route    POST /api/users/profile
 // @access  Private
 export const createProfile = asyncHandler(
@@ -387,6 +389,7 @@ export const editProfile = asyncHandler(async (req: Request, res: Response) => {
       courses: {
         set: courses,
       },
+      status: UserStatus.Pending,
     },
   });
 
@@ -395,3 +398,80 @@ export const editProfile = asyncHandler(async (req: Request, res: Response) => {
     student: updatedStudent,
   });
 });
+
+// @desc    Get students' profile
+// route    GET /api/users/student
+// @access  Private
+export const getProfiles = asyncHandler(async (req: Request, res: Response) => {
+  const { secret } = req.query;
+
+  if (!secret && secret === process.env.ADMIN_SECRET) {
+    res.status(401);
+    throw new Error("You're not an admin");
+  }
+
+  const students = await prisma.student.findMany({
+    where: {
+      status: UserStatus.Pending,
+    },
+    orderBy: {
+      updated_at: "desc",
+    },
+    include: {
+      program: true,
+      courses: true,
+    },
+  });
+
+  res.status(200).json({ students });
+});
+
+// @desc    Get student details
+// route    GET /api/users/student/:id
+// @access  Private
+export const getStudent = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.query;
+
+  if (!id || !isNaN(Number(id))) {
+    res.status(401);
+    throw new Error("Id not present");
+  }
+
+  const foundStudent = await prisma.student.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+
+  res.status(200).json({ student: foundStudent });
+});
+
+// @desc    Approve student profile
+// route    POST /api/users/student/approve
+// @access  Private
+export const approveProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { secret, approved, student_id } = req.body;
+    
+    if (!secret || secret !== process.env.ADMIN_SECRET) {
+      res.status(401);
+      throw new Error("You're not an admin");
+    }
+    
+    if (!student_id || !approved ) {
+      res.status(401);
+      throw new Error("Incomplete body details");
+    }
+
+    await prisma.student.update({
+      where: {
+        id: student_id,
+      },
+      data: {
+        status: approved === "true" ? UserStatus.Approved : UserStatus.Rejected,
+      },
+    });
+
+    res.status(200).json({ message: "Student profile updated successfully" });
+  }
+);

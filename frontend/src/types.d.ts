@@ -6,6 +6,35 @@ export interface ProfileState {
   courseQuery: CourseQuery;
   loading: boolean;
 }
+
+export interface StudentState {
+  students: StudentProfile[];
+  loading: boolean;
+  student: {} | StudentProfile;
+  tab: number;
+}
+
+export interface StudentProfile {
+  id: number;
+  first_name: string;
+  last_name: string;
+  other_name?: string;
+  email: string;
+  phone_no: string;
+  gender: string;
+  level: number;
+  semester: number;
+  index_number: number;
+  reference_no: number;
+  program_id: number;
+  program: Program;
+  courses: Course[];
+  image_url: string;
+  status: string;
+  created_on: string;
+  updated_at: string;
+}
+
 export interface StudentInput {
   first_name: string;
   last_name: string;
@@ -24,7 +53,7 @@ export interface StudentInput {
 export interface Program {
   id: number;
   name: string;
-  creatsed_on: string;
+  created_on: string;
   updated_at: string;
 }
 

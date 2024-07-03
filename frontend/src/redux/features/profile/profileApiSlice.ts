@@ -9,11 +9,19 @@ export const profileApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Course"],
     }),
+    addCourse: builder.mutation({
+      query: (data) => ({
+        url: `${COURSES_URL}`,
+        body: data,
+        method: "POST",
+      }),
+      invalidatesTags: ["Course"],
+    }),
     getPrograms: builder.query({
       query: () => ({
         url: `${PROGRAMS_URL}/`,
       }),
-      providesTags: (result) =>
+      providesTags: (result: any) =>
         result?.programs
           ? [
               ...result?.programs?.map(({ id }: { id: number }) => ({
@@ -24,7 +32,20 @@ export const profileApiSlice = apiSlice.injectEndpoints({
             ]
           : ["Program"],
     }),
+    addProgram: builder.mutation({
+      query: (data) => ({
+        url: `${PROGRAMS_URL}`,
+        body: data,
+        method: "POST",
+      }),
+      invalidatesTags: ["Program"],
+    }),
   }),
 });
 
-export const { useGetCoursesQuery, useGetProgramsQuery } = profileApiSlice;
+export const {
+  useGetCoursesQuery,
+  useGetProgramsQuery,
+  useAddCourseMutation,
+  useAddProgramMutation,
+} = profileApiSlice;

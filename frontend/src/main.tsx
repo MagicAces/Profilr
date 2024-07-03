@@ -22,6 +22,9 @@ import Create from "./pages/Create.tsx";
 import Edit from "./pages/Edit.tsx";
 import Error from "./components/Error.tsx";
 import NotFound from "./components/NotFound.tsx";
+import AdminRoute from "./components/AdminRoute.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
+import Student from "./pages/Student.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,7 +37,13 @@ const router = createBrowserRouter(
         <Route index={true} path="/" element={<Home />} />
         <Route path="/create" element={<Create />} />
         <Route path="/edit" element={<Edit />} />
+
+        <Route path="" element={<AdminRoute />}>
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/student/:id" element={<Student />} />
+        </Route>
       </Route>
+
       <Route path="*" element={<NotFound />} />
     </Route>
   )

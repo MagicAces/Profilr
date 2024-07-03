@@ -40,6 +40,7 @@ model Student {
   index_number   Int       @unique
   image_url      String  
   image_key      String
+  status         UserStatus @default(Pending) 
   reference_no   Int       @unique
   created_on     DateTime  @default(now()) 
   updated_at     DateTime  @updatedAt
@@ -90,4 +91,12 @@ enum Gender {
   Female
 
   @@map("gender")
+}
+
+enum UserStatus {
+  Pending
+  Approved
+  Rejected
+
+  @@map("user_status")
 }

@@ -1,40 +1,59 @@
 .not-found {
-    min-height: 100vh;
-    min-width: 100vw;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #1b1b1d;
+  min-height: 100vh;
+  min-width: 100vw;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #121212;
 }
 
 .not-found .not-found-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4rem;
 }
 
 .not-found .not-found-body .not-found-body-top {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .not-found .not-found-body .not-found-body-top .not-found-body-top-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
 }
 
+.not-found button {
+  background-color: #ffffff;
+  color: #2c2c2c;
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.5rem;
+  outline: none;
+  font-size: 15px;
+  font-family: inherit !important;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
 
-
+.not-found button:hover {
+  border: 1px solid #ffffff;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  color: #ffffff;
+}

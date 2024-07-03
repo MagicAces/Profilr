@@ -7,5 +7,6 @@ const router = Router();
 router
   .route("/")
   .get(protect, course.getCourses)
+  .post(protect, course.addCourse)
 
 export default router;

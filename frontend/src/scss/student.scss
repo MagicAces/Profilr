@@ -1,0 +1,33 @@
+@import 'config';
+
+.student-view-container {
+    width: 100vw;
+    min-height: 100vh;
+    padding: 2.5rem;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+    gap: 2.5rem;
+    background-color: $secondary-background;
+
+
+    @media (max-width: 570px) {
+        padding: 1.5rem;
+    }
+
+    &-content {
+        flex-grow: 1;
+        width: 100%;
+        display: flex;
+        align-items: stretch;
+        justify-content: stretch;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        .student-container {
+            @extend .student-container;
+        }
+    }
+}

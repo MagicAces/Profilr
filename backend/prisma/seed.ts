@@ -12,15 +12,7 @@ const programs = [
   },
 ];
 
-// name          String
-//   code          String
-//   level         String
-//   semester      Int
-//   program_id    Int
-//   credit        Int
-//   type          CourseType  @default(Compulsory)
-
-const courses = [
+const year4 = [
   {
     name: "Computer Networking",
     code: "COE 475",
@@ -167,14 +159,80 @@ const courses = [
   },
 ];
 
+const year1sem2 = [
+  {
+    name: "Mathematics",
+    code: "MATH 152",
+    level: "100",
+    semester: 2,
+    program_id: 1,
+    credit: 4,
+    type: CourseType.Compulsory,
+  },
+  {
+    name: "Communication Skills",
+    code: "ENGL 158",
+    level: "100",
+    semester: 2,
+    program_id: 1,
+    credit: 2,
+    type: CourseType.Compulsory,
+  },
+  {
+    name: "Applied Thermodynamics",
+    code: "ME 166",
+    level: "100",
+    semester: 2,
+    program_id: 1,
+    credit: 2,
+    type: CourseType.Compulsory,
+  },
+  {
+    name: "Basic Electronics",
+    code: "EE 152",
+    level: "100",
+    semester: 2,
+    program_id: 1,
+    credit: 3,
+    type: CourseType.Compulsory,
+  },
+  {
+    name: "Electrical Eng. Drawing",
+    code: "EE 156",
+    level: "100",
+    semester: 2,
+    program_id: 1,
+    credit: 2,
+    type: CourseType.Compulsory,
+  },
+  {
+    name: "Electrical Machines",
+    code: "EE 172",
+    level: "100",
+    semester: 2,
+    program_id: 1,
+    credit: 3,
+    type: CourseType.Compulsory,
+  },
+  {
+    name: "Introduction to Information Technology (IT)",
+    code: "COE 158",
+    level: "400",
+    semester: 2,
+    program_id: 1,
+    credit: 2,
+    type: CourseType.Compulsory,
+  },
+];
+
 const prisma = new PrismaClient();
 
 async function main() {
-  //   const res = await prisma.program.createMany({
-  //     data: programs,
-  //   });
+  // const res = await prisma.program.createMany({
+  //   data: programs,
+  // });
   const res = await prisma.course.createMany({
-    data: courses,
+    data: year1sem2,
   });
 
   console.log(res);

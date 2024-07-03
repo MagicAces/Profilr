@@ -9,7 +9,7 @@ const Content = () => {
   return (
     <>
       <div className="home-container-content">
-        {!loading && !userInfo?.student ? <Default /> : <Student />}
+        {!loading && !userInfo?.student ? <Default /> : <Student /> }
       </div>
     </>
   );

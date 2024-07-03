@@ -9,6 +9,35 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+    getProfiles: builder.query({
+      query: (secret) => ({
+        url: `${USERS_URL}/student?secret=${secret}`,
+      }),
+      providesTags: (result: any) =>
+        result?.students
+          ? [
+              ...result?.students?.map(({ id }: { id: number }) => ({
+                type: "Student" as const,
+                id,
+              })),
+              "Student",
+            ]
+          : ["Student"],
+    }),
+    getStudent: builder.query({
+      query: (id) => ({
+        url: `${USERS_URL}/student/${id}`,
+      }),
+      providesTags: (result: any) => [{type: 'Student', id: result?.student?.id}]
+    }),
+    approveProfile: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/student/approve`,
+        body: data,
+        method: "POST",
+      }),
+      invalidatesTags: ["Student"],
+    }),
     fetchProfile: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/fetch`,
@@ -44,8 +73,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetProfileQuery,
+  useGetProfilesQuery,
+  useGetStudentQuery,
   useFetchProfileMutation,
   useCreateProfileMutation,
+  useApproveProfileMutation,
   useLogoutMutation,
   useUpdateProfileMutation,
 } = userApiSlice;

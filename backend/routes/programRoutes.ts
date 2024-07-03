@@ -4,6 +4,9 @@ import { protect } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.route("/").get(protect, program.getPrograms);
+router
+  .route("/")
+  .get(protect, program.getPrograms)
+  .post(protect, program.addProgram);
 
 export default router;

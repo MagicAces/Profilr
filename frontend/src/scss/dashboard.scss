@@ -1,0 +1,135 @@
+@import 'config';
+
+.dashboard-container {
+    width: 100vw;
+    min-height: 100vh;
+    padding: 2.5rem;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+    gap: 2.5rem;
+    background-color: $secondary-background;
+
+
+    @media (max-width: 570px) {
+        padding: 1.5rem;
+    }
+
+    &-content {
+        flex-grow: 1;
+        width: 100%;
+        display: flex;
+        align-items: stretch;
+        justify-content: stretch;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        &-tabs {
+            width: 100%;
+            border-radius: 0.8rem;
+            background-color: $input-background;
+            display: flex;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            padding: 0 0.8rem;
+            &>div {
+                flex-grow: 1;
+                flex-basis: 50%;
+                padding: 0.7rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $secondary-text;
+                border: 1px solid transparent;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                font-size: 14px;
+
+            }
+
+
+            &>div:hover {
+                cursor: pointer;
+                color: $accent-color;
+            }
+
+            &>.active {
+                border-bottom: 1px solid $accent-color;
+                color: $accent-color;
+            }
+
+        }
+
+        .students-container {
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            justify-content: stretch;
+            align-items: stretch;
+            flex-direction: column;
+            gap: 1.2rem;
+
+            .student-card {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                padding: 0.8rem 1.2rem;
+                border: 1px solid transparent;
+                background-color: $light-border;
+                box-shadow: 0 3px 3px 0 $shadow-color;
+                border-radius: 0.6rem;
+                align-items: center;
+                gap: 1rem;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                &-left {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.7rem;
+                    align-items: flex-start;
+                    font-family: inherit !important;
+
+                    .name {
+                        font-weight: 500;
+                    }
+
+                    .other-details {
+                        display: flex;
+                        gap: 0.5rem;
+                        align-items: center;
+                        font-size: 11px;
+                        color: $secondary-text;
+                    }
+                }
+
+                .student-image {
+                    border-radius: 0.6rem;
+                    box-shadow: 0 2px 2px 0 $shadow-color;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                }
+            }
+
+            .student-card:hover {
+                border: 1px solid $light-border;
+                background-color: transparent;
+                cursor: pointer;
+            }
+        }
+
+        .no-student-found {
+            flex-grow: 1;
+            padding: 3rem;
+            width: 100%;
+            border: 1px dashed $light-border;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 2rem;
+            border-radius: 0.5rem;
+            color: $secondary-text;
+            font-family: inherit !important;
+            font-size: 14px;
+        }
+    }
+}

@@ -1,23 +1,68 @@
-import { TbUserEdit } from "react-icons/tb";
 import Skeleton from "react-loading-skeleton";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { StudentProfile } from "../../../types";
+import { MdClose, MdHome, MdOutlineCheck } from "react-icons/md";
+import { useApproveProfileMutation } from "../../../redux/features/user/userApiSlice";
+import { toast } from "react-toastify";
+
+import { setLoading } from "../../../redux/features/student/studentSlice";
+import Loader from "../../Utils/Loader";
 
 const Personal = () => {
-  const { userInfo }: { userInfo: any } = useSelector(
-    (state: any) => state.auth
-  );
-  const { loading } = useSelector((state: any) => state.profile);
+  const { student, loading }: { student: StudentProfile; loading: boolean } =
+    useSelector((state: any) => state.student);
+  const [approve, { isLoading: approveLoading }] = useApproveProfileMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const handleApprove = async (status: boolean) => {
+    try {
+      const res = await approve({
+        secret: import.meta.env.VITE_ADMIN_SECRET,
+        student_id: student.id,
+        approved: status ? "true" : "false",
+      }).unwrap();
+      toast.success(res.message);
+      dispatch(setLoading(true));
+      navigate("/admin", { replace: true });
+    } catch (error: any) {
+      toast.error(error?.data?.message || error?.message);
+    }
+  };
   return (
     <>
+      {approveLoading && <Loader />}
       <div className="student-container-personal">
         <div className="header">
           <h3 className="heading">Personal Details</h3>
           {!loading && (
-            <Link to="/edit" className="edit-link">
-              <TbUserEdit /> <span>Edit Profile</span>
-            </Link>
+            <div className="action-buttons">
+              <button
+                type="button"
+                className="home-button"
+                onClick={() => navigate("/admin")}
+              >
+                <MdHome />
+                <span>Home</span>
+              </button>
+              <button
+                type="button"
+                className="approve-button"
+                onClick={() => handleApprove(true)}
+              >
+                <MdOutlineCheck />
+                <span>Approve</span>
+              </button>
+              <button
+                type="button"
+                className="reject-button"
+                onClick={() => handleApprove(false)}
+              >
+                <MdClose />
+                <span>Reject</span>
+              </button>
+            </div>
           )}
         </div>
         <div className="body">
@@ -35,11 +80,7 @@ const Personal = () => {
                 }}
               />
             ) : (
-              <img
-                src={userInfo?.student?.image_url}
-                alt="student's image"
-                fetchPriority="high"
-              />
+              <img src={student?.image_url} alt="student's image" />
             )}
           </div>
           <div className="body-right">
@@ -48,7 +89,7 @@ const Personal = () => {
                 <span>First name</span>
                 <p>
                   {!loading ? (
-                    userInfo?.student?.first_name
+                    student?.first_name
                   ) : (
                     <Skeleton
                       baseColor="#2C2C2C"
@@ -65,7 +106,7 @@ const Personal = () => {
                 <span>Last name</span>
                 <p>
                   {!loading ? (
-                    userInfo?.student?.last_name
+                    student?.last_name
                   ) : (
                     <Skeleton
                       baseColor="#2C2C2C"
@@ -83,7 +124,7 @@ const Personal = () => {
                 <span>Other name</span>
                 <p>
                   {!loading ? (
-                    userInfo?.student?.other_name || "N/A"
+                    student?.other_name || "N/A"
                   ) : (
                     <Skeleton
                       baseColor="#2C2C2C"
@@ -100,7 +141,7 @@ const Personal = () => {
                 <span>Email</span>
                 <p>
                   {!loading ? (
-                    userInfo?.student?.email
+                    student?.email
                   ) : (
                     <Skeleton
                       baseColor="#2C2C2C"
@@ -118,7 +159,7 @@ const Personal = () => {
                 <span>Gender</span>
                 <p>
                   {!loading ? (
-                    userInfo?.student?.gender
+                    student?.gender
                   ) : (
                     <Skeleton
                       baseColor="#2C2C2C"
@@ -135,7 +176,7 @@ const Personal = () => {
                 <span>Phone number</span>
                 <p>
                   {!loading ? (
-                    userInfo?.student?.phone_no
+                    student?.phone_no
                   ) : (
                     <Skeleton
                       baseColor="#2C2C2C"
