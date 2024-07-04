@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-// import Tabs from "./Tabs";
-import Students from "./Students";
-import Course from "./Course";
+import Tabs from "./Tabs";
+import Requests from "./Requests";
+import Register from "./Register";
 
 const Content = () => {
   const { tab } = useSelector((state: any) => state.student);
@@ -9,10 +9,10 @@ const Content = () => {
   return (
     <>
       <div className="dashboard-container-content">
-        {/* <Tabs /> */}
-        <h3>Pending Requests</h3>
-        {tab === 1 && <Students />}
-        {tab === 2 && <Course />}
+        <Tabs />
+        {/* <h3>Pending Requests</h3> */}
+        {tab === 1 && <Requests />}
+        {tab === 2 && <Register />}
       </div>
     </>
   );

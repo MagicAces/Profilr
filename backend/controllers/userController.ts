@@ -411,9 +411,9 @@ export const getProfiles = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const students = await prisma.student.findMany({
-    where: {
-      status: UserStatus.Pending,
-    },
+    // where: {
+    //   status: UserStatus.Pending,
+    // },
     orderBy: {
       updated_at: "desc",
     },

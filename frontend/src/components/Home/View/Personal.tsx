@@ -25,7 +25,8 @@ const Personal = () => {
           </div>
           {!loading && (
             <Link to="/edit" className="edit-link">
-              <TbUserEdit /> Edit Profile
+              <TbUserEdit />
+              <span>Edit Profile</span>
             </Link>
           )}
         </div>

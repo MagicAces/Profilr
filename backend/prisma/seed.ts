@@ -217,7 +217,7 @@ const year1sem2 = [
   {
     name: "Introduction to Information Technology (IT)",
     code: "COE 158",
-    level: "400",
+    level: "100",
     semester: 2,
     program_id: 1,
     credit: 2,

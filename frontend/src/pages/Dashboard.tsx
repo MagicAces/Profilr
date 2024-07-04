@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(setLoading(studentsLoading));
-   
+
     if (!studentsLoading && !studentsError && students) {
       dispatch(setStudents(students?.students));
     }

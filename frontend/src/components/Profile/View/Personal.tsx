@@ -1,8 +1,8 @@
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { StudentProfile } from "../../../types";
-import { MdClose, MdHome, MdOutlineCheck } from "react-icons/md";
+import { MdCircle, MdClose, MdHome, MdOutlineCheck } from "react-icons/md";
 import { useApproveProfileMutation } from "../../../redux/features/user/userApiSlice";
 import { toast } from "react-toastify";
 
@@ -15,6 +15,9 @@ const Personal = () => {
   const [approve, { isLoading: approveLoading }] = useApproveProfileMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const view = queryParams.get("view");
 
   const handleApprove = async (status: boolean) => {
     try {
@@ -35,7 +38,15 @@ const Personal = () => {
       {approveLoading && <Loader />}
       <div className="student-container-personal">
         <div className="header">
-          <h3 className="heading">Personal Details</h3>
+          <div>
+            <h3 className="heading">Personal Details</h3>
+            {view && (
+              <div className={`status ${student?.status?.toLowerCase()}`}>
+                <MdCircle />
+                <span>{student?.status}</span>
+              </div>
+            )}
+          </div>
           {!loading && (
             <div className="action-buttons">
               <button
@@ -46,22 +57,26 @@ const Personal = () => {
                 <MdHome />
                 <span>Home</span>
               </button>
-              <button
-                type="button"
-                className="approve-button"
-                onClick={() => handleApprove(true)}
-              >
-                <MdOutlineCheck />
-                <span>Approve</span>
-              </button>
-              <button
-                type="button"
-                className="reject-button"
-                onClick={() => handleApprove(false)}
-              >
-                <MdClose />
-                <span>Reject</span>
-              </button>
+              {!view && (
+                <>
+                  <button
+                    type="button"
+                    className="approve-button"
+                    onClick={() => handleApprove(true)}
+                  >
+                    <MdOutlineCheck />
+                    <span>Approve</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="reject-button"
+                    onClick={() => handleApprove(false)}
+                  >
+                    <MdClose />
+                    <span>Reject</span>
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>

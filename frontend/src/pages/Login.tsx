@@ -11,6 +11,7 @@ import Starfield from "react-starfield";
 import xaminate from "../assets/xaminate.svg";
 import knust from "../assets/knust.png";
 import securityShade from "../assets/security_shade.png";
+import godsai from "../assets/godsai.png";
 import Loader from "../components/Utils/Loader";
 import { AUTH_URL } from "../redux/constants";
 
@@ -54,9 +55,7 @@ const Login = () => {
 
   const handleClick = () => {
     setLoader(true);
-    window.location.href = `${
-      import.meta.env.VITE_SERVER_URL
-    }${AUTH_URL}`;
+    window.location.href = `${import.meta.env.VITE_SERVER_URL}${AUTH_URL}`;
   };
 
   if (userInfo) return null;
@@ -83,6 +82,7 @@ const Login = () => {
         </div>
         <div className="login-container-footer">
           <img src={xaminate} alt={"Xaminate"} className="xaminate" />
+          <img src={godsai} alt={"GodsAI"} className="godsai" />
           <img src={knust} alt={"KNUST"} className="knust" />
           <img
             src={securityShade}
