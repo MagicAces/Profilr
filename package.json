@@ -9,7 +9,7 @@
     "server": "nodemon backend/app.ts",
     "client": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm install && npx prisma generate && tsc && cd frontend && npm install && npm run build"
+    "build": "npm install --production=false && npx prisma generate && tsc && cd frontend && npm install --production=false && npm run build"
   },
   "prisma": {
     "schema": "backend/prisma/schema.prisma",
