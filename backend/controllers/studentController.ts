@@ -28,6 +28,7 @@ export const createStudent = asyncHandler(
       phone_no,
     } = req.body as StudentInput;
 
+    console.log(req.body);
     // const user_id = req?.user?.id;
 
     // if (!user_id) {
@@ -44,9 +45,9 @@ export const createStudent = asyncHandler(
           level !== "200" ||
           level !== "300" ||
           level !== "400")) ||
-      (!index_number) ||
-      (!reference_no ) ||
-      (!program_id ) ||
+      !index_number ||
+      !reference_no ||
+      !program_id ||
       (!image && !image.length) ||
       !course_ids
     ) {
@@ -73,6 +74,7 @@ export const createStudent = asyncHandler(
         "Student with the same index number, reference number, or email already exists"
       );
     }
+    console.log("here");
     const imageBuffer = base64ToBuffer(image);
     const processedImage = await sharp(imageBuffer)
       .resize(294, 412)
