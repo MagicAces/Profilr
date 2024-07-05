@@ -268,7 +268,7 @@ const Picture = () => {
               type="file"
               accept=".jpg, .png, .jpeg"
               onChange={onSelectFile}
-              capture="environment"
+              // capture="environment"
             />
           </label>
         </div>
