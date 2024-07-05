@@ -298,7 +298,7 @@ const Picture = () => {
             </div>
           </div>
           <div className="sample">
-            <img src={sample} alt="Sample Image" fetchPriority="high" />
+            <img src={sample} alt="Sample Image" />
           </div>
         </div>
         <div className="action">

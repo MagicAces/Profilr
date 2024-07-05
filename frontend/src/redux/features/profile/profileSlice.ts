@@ -44,7 +44,6 @@ const profileSlice = createSlice({
     },
     fillStudent: (state, action: PayloadAction<StudentInput>) => {
       state.student = action.payload;
-      console.log(action.payload);
     },
     setCourses: (state, action: PayloadAction<Course[]>) => {
       state.courses = action.payload;

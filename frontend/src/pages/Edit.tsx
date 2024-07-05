@@ -37,8 +37,8 @@ const Edit = () => {
     error: programsError,
     isLoading: programsLoading,
   } = useGetProgramsQuery(null, {
-    pollingInterval: 5 * 1000,
-    refetchOnReconnect: true,
+    // pollingInterval: 5 * 1000,
+    refetchOnReconnect: false,
   });
 
   useEffect(() => {

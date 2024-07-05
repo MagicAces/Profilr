@@ -34,8 +34,8 @@ const DropdownIndicator = (
 const School = () => {
   const { student, programs }: { student: StudentInput; programs: Program[] } =
     useSelector((state: any) => state.profile);
-  const { userInfo }: { userInfo: any } = useSelector(
-    (state: any) => state.auth
+  const { student: originalStudent } = useSelector(
+    (state: any) => state.student
   );
   const dispatch = useDispatch();
 
@@ -115,7 +115,7 @@ const School = () => {
 
     if (!valid) return;
 
-    student?.program_id === userInfo?.student?.program?.id &&
+    student?.program_id === originalStudent?.program?.id &&
       dispatch(
         setCourseQuery({
           name: "program_id",
@@ -123,7 +123,7 @@ const School = () => {
         })
       );
 
-    student?.level === userInfo?.student?.level?.toString() &&
+    student?.level === originalStudent?.level?.toString() &&
       dispatch(
         setCourseQuery({
           name: "level",
@@ -131,7 +131,7 @@ const School = () => {
         })
       );
 
-    student?.semester === userInfo?.student?.courses[0]?.semester &&
+    student?.semester === originalStudent?.courses[0]?.semester &&
       dispatch(
         setCourseQuery({
           name: "semester",

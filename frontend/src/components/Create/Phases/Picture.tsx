@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import ReactCrop, {
   centerCrop,
   makeAspectCrop,
@@ -6,7 +6,7 @@ import ReactCrop, {
   PixelCrop,
 } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import * as faceapi from "face-api.js";
+// import * as faceapi from "face-api.js";
 import { useDispatch, useSelector } from "react-redux";
 import sample from "../../../assets/sample.png";
 import { toast } from "react-toastify";
@@ -56,7 +56,7 @@ const Picture = () => {
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [loader, setLoader] = useState(false);
-  const [modelsLoaded, isModelsLoaded] = useState(false);
+  // const [modelsLoaded, isModelsLoaded] = useState(false);
 
   const [createStudent, { isLoading: createLoading }] =
     useCreateStudentMutation();
@@ -292,7 +292,7 @@ const Picture = () => {
                 alt="Crop me"
                 src={imgSrc}
                 onLoad={onImageLoad}
-                fetchPriority="high"
+                // fetchPriority="high"
               />
             </ReactCrop>
           </div>

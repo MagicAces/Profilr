@@ -44,9 +44,9 @@ export const createStudent = asyncHandler(
           level !== "200" ||
           level !== "300" ||
           level !== "400")) ||
-      (!index_number && !index_number.length) ||
-      (!reference_no && !reference_no.length) ||
-      (!program_id && !program_id?.length) ||
+      (!index_number) ||
+      (!reference_no ) ||
+      (!program_id ) ||
       (!image && !image.length) ||
       !course_ids
     ) {
@@ -140,6 +140,7 @@ export const editStudent = asyncHandler(async (req: Request, res: Response) => {
     program_id,
     image,
   } = req.body as StudentInput;
+
   const { id: student_id } = req.params;
   // const user_id = req?.user?.id;
 
@@ -149,7 +150,7 @@ export const editStudent = asyncHandler(async (req: Request, res: Response) => {
   // }
 
   let courses: { id: number }[] = course_ids.map((id) => ({
-    id: Number(id),
+    id,
   }));
 
   const foundStudent = await prisma.student.findUnique({
@@ -236,18 +237,9 @@ export const editStudent = asyncHandler(async (req: Request, res: Response) => {
       email: email && email.length > 0 ? email.trim() : foundStudent.email,
       level:
         level && level.length > 0 ? Number(level.trim()) : foundStudent.level,
-      index_number:
-        index_number && index_number.length > 0
-          ? Number(index_number.trim())
-          : foundStudent.index_number,
-      reference_no:
-        reference_no && reference_no.length > 0
-          ? Number(reference_no.trim())
-          : foundStudent.reference_no,
-      program_id:
-        program_id && program_id.length > 0
-          ? Number(program_id.trim())
-          : foundStudent.program_id,
+      index_number: index_number > 0 ? index_number : foundStudent.index_number,
+      reference_no: reference_no > 0 ? reference_no : foundStudent.reference_no,
+      program_id: program_id > 0 ? program_id : foundStudent.program_id,
       image_url:
         upload && image.length > 0
           ? new_image_url ?? ""
@@ -301,7 +293,6 @@ export const getStudents = asyncHandler(async (req: Request, res: Response) => {
 // @access  Private
 export const getStudent = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
-  
 
   if (!id || isNaN(Number(id))) {
     res.status(401);
@@ -314,8 +305,8 @@ export const getStudent = asyncHandler(async (req: Request, res: Response) => {
     },
     include: {
       program: true,
-      courses: true
-    }
+      courses: true,
+    },
   });
 
   res.status(200).json({ student: foundStudent });
