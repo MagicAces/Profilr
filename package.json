@@ -2,14 +2,14 @@
   "name": "profilr",
   "version": "1.0.0",
   "description": "A Student's data collection system",
-  "main": "app.ts",
+  "main": "dist/app.js",
   "scripts": {
     "test": "ts-node backend/app.ts",
     "start": "node ./dist/app.js",
     "server": "nodemon backend/app.ts",
     "client": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm install && npx prisma generate && tsc && cd frontend && npm install && npm run build"
+    "build": "tsc && npm install && npx prisma generate && cd frontend && npm install && npm run build"
   },
   "prisma": {
     "schema": "backend/prisma/schema.prisma",
