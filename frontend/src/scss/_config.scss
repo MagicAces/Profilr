@@ -50,6 +50,30 @@ button {
         sans-serif;
 }
 
+button.continue-button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.8rem;
+    background-color: $accent-color;
+    color: $primary-background;
+    font-size: 16px;
+    outline: none;
+    box-shadow: 0 2px 4px $shadow-color;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    // transition: all 200ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+    font-family: inherit;
+
+    &:hover {
+        background: transparent;
+        color: $primary-text;
+        border: 1px solid $light-border;
+    }
+}
+
 .student-container {
     flex-grow: 1;
     width: 100%;
@@ -202,12 +226,14 @@ button {
                     }
                 }
 
-                button.home-button {
+                button.home-button,
+                button.edit-button {
                     background-color: $accent-color;
                     color: $primary-background;
                 }
 
-                button.home-button:hover {
+                button.home-button:hover,
+                button.edit-button:hover {
                     background-color: transparent;
                     color: $primary-text;
                     border: 1px solid $light-border;

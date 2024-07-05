@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import ReactCrop, {
   centerCrop,
   makeAspectCrop,
@@ -6,7 +6,7 @@ import ReactCrop, {
   PixelCrop,
 } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import * as faceapi from "face-api.js";
+// import * as faceapi from "face-api.js";
 import { useDispatch, useSelector } from "react-redux";
 import sample from "../../../assets/sample.png";
 import { toast } from "react-toastify";
@@ -21,9 +21,10 @@ import { canvasPreview } from "../../../utils/canvasPreview";
 import { blobToBase64 } from "../../../utils/funct";
 import { StudentInput } from "../../../types";
 import { useNavigate } from "react-router";
-import { useUpdateProfileMutation } from "../../../redux/features/user/userApiSlice";
+// import { useUpdateProfileMutation } from "../../../redux/features/user/userApiSlice";
 import { isEqual } from "lodash";
 import { apiSlice } from "../../../redux/features/apiSlice";
+import { useUpdateStudentMutation } from "../../../redux/features/student/studentApiSlice";
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -49,8 +50,8 @@ const Picture = () => {
   const { student }: { student: StudentInput } = useSelector(
     (state: any) => state.profile
   );
-  const { userInfo }: { userInfo: any } = useSelector(
-    (state: any) => state.auth
+  const { student: originalStudent } = useSelector(
+    (state: any) => state.student
   );
 
   const [imgSrc, setImgSrc] = useState("");
@@ -60,33 +61,33 @@ const Picture = () => {
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [loader, setLoader] = useState(false);
-  const [modelsLoaded, isModelsLoaded] = useState(false);
+  // const [modelsLoaded, isModelsLoaded] = useState(false);
 
-  const [updateProfile, { isLoading: updateLoading }] =
-    useUpdateProfileMutation();
+  const [updateStudent, { isLoading: updateLoading }] =
+    useUpdateStudentMutation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadModels = async () => {
-      const MODEL_URL = "/models";
-      Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-      ])
-        .then(() => {
-          console.log("hello");
-          isModelsLoaded(true);
-        })
-        .catch((err) => console.log(err));
-    };
+  // useEffect(() => {
+  //   const loadModels = async () => {
+  //     const MODEL_URL = "/models";
+  //     Promise.all([
+  //       faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+  //       faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+  //       faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+  //       faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+  //       faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
+  //     ])
+  //       .then(() => {
+  //         console.log("hello");
+  //         isModelsLoaded(true);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   };
 
-    loadModels();
-  }, []);
+  //   loadModels();
+  // }, []);
 
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
@@ -154,18 +155,18 @@ const Picture = () => {
     });
 
     if (blob) {
-      const facesDetected = await validateFace(blob);
-      if (facesDetected === 0) {
-        setLoader(false);
-        toast.error("No face detected");
-        return;
-      }
+      // const facesDetected = await validateFace(blob);
+      // if (facesDetected === 0) {
+      //   setLoader(false);
+      //   toast.error("No face detected");
+      //   return;
+      // }
 
-      if (facesDetected > 1) {
-        setLoader(false);
-        toast.error(`Multiple faces (${facesDetected}) detected`);
-        return;
-      }
+      // if (facesDetected > 1) {
+      //   setLoader(false);
+      //   toast.error(`Multiple faces (${facesDetected}) detected`);
+      //   return;
+      // }
       dispatch(fillStudent({ ...student, image: await blobToBase64(blob) }));
     }
     // setCompletedCrop(undefined);
@@ -189,45 +190,45 @@ const Picture = () => {
     [completedCrop]
   );
 
-  const validateFace = async (imageBlob: Blob): Promise<number> => {
-    if (!modelsLoaded) return 0;
-    try {
-      const image = await faceapi.bufferToImage(imageBlob);
+  // const validateFace = async (imageBlob: Blob): Promise<number> => {
+  //   if (!modelsLoaded) return 0;
+  //   try {
+  //     const image = await faceapi.bufferToImage(imageBlob);
 
-      const detections = await faceapi.detectAllFaces(
-        image
-        // new faceapi.TinyFaceDetectorOptions({
-        //   inputSize: 512,
-        //   scoreThreshold: 0.5,
-        // })
-      );
-      console.log("Face detection result:", detections);
-      return detections.length;
-    } catch (error) {
-      console.error("Error during face detection:", error);
-      return 0;
-    }
-  };
+  //     const detections = await faceapi.detectAllFaces(
+  //       image
+  //       // new faceapi.TinyFaceDetectorOptions({
+  //       //   inputSize: 512,
+  //       //   scoreThreshold: 0.5,
+  //       // })
+  //     );
+  //     console.log("Face detection result:", detections);
+  //     return detections.length;
+  //   } catch (error) {
+  //     console.error("Error during face detection:", error);
+  //     return 0;
+  //   }
+  // };
 
   const notEdited = () => {
     const original: StudentInput = {
-      first_name: userInfo?.student?.first_name ?? "",
-      last_name: userInfo?.student?.last_name ?? "",
-      other_name: userInfo?.student?.other_name ?? "",
-      email: userInfo?.student?.email ?? "",
-      phone_no: userInfo?.student?.phone_no ?? "",
-      gender: userInfo?.student?.gender?.toLowerCase() ?? "",
-      level: userInfo?.student?.level?.toString() ?? "",
+      first_name: originalStudent?.first_name ?? "",
+      last_name: originalStudent?.last_name ?? "",
+      other_name: originalStudent?.other_name ?? "",
+      email: originalStudent?.email ?? "",
+      phone_no: originalStudent?.phone_no ?? "",
+      gender: originalStudent?.gender?.toLowerCase() ?? "",
+      level: originalStudent?.level?.toString() ?? "",
       semester:
-        userInfo?.student?.courses?.length > 0
-          ? userInfo?.student?.courses[0]?.semester
+        originalStudent?.courses?.length > 0
+          ? originalStudent?.courses[0]?.semester
           : 0,
-      index_number: userInfo?.student?.index_number ?? 0,
-      reference_no: userInfo?.student?.reference_no ?? 0,
-      program_id: userInfo?.student?.program?.id ?? 0,
+      index_number: originalStudent?.index_number ?? 0,
+      reference_no: originalStudent?.reference_no ?? 0,
+      program_id: originalStudent?.program?.id ?? 0,
       course_ids:
-        userInfo?.student?.courses?.map((course: any) => course?.id) ?? [],
-      image: userInfo?.student?.image_url ?? "",
+        originalStudent?.courses?.map((course: any) => course?.id) ?? [],
+      image: originalStudent?.image_url ?? "",
     };
 
     if (isEqual(original, student)) return true;
@@ -250,8 +251,8 @@ const Picture = () => {
     }
 
     try {
-      const res = await updateProfile({
-        id: userInfo?.student?.id,
+      const res = await updateStudent({
+        id: originalStudent?.id,
         data: student,
       }).unwrap();
       toast.success(res.message);
@@ -322,7 +323,9 @@ const Picture = () => {
               // minWidth={400}
               minHeight={412}
               minWidth={294}
-              locked={true}
+              locked={false}
+              maxHeight={420}
+              maxWidth={302}
               // circularCrop
             >
               <img
@@ -359,8 +362,8 @@ const Picture = () => {
               src={student.image}
               style={{
                 objectFit: "contain",
-                width: completedCrop?.width || "100%",
-                height: completedCrop?.height ?? "auto",
+                width: "294px",
+                height: "412px",
               }}
             />
           </div>

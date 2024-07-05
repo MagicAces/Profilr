@@ -30,6 +30,28 @@ button {
   font-family: "Roboto", sans-serif;
 }
 
+button.continue-button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.8rem;
+  background-color: #F0F0F0;
+  color: #000000;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  font-family: inherit;
+}
+button.continue-button:hover {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+}
+
 .student-container {
   flex-grow: 1;
   width: 100%;
@@ -159,11 +181,13 @@ button {
     font-size: 14px;
   }
 }
-.student-container-personal > .header .action-buttons button.home-button {
+.student-container-personal > .header .action-buttons button.home-button,
+.student-container-personal > .header .action-buttons button.edit-button {
   background-color: #F0F0F0;
   color: #000000;
 }
-.student-container-personal > .header .action-buttons button.home-button:hover {
+.student-container-personal > .header .action-buttons button.home-button:hover,
+.student-container-personal > .header .action-buttons button.edit-button:hover {
   background-color: transparent;
   color: #FFFFFF;
   border: 1px solid #333333;
@@ -412,7 +436,7 @@ button {
   display: flex;
   justify-content: flex-end;
   gap: 1.6rem;
-  align-items: stretch;
+  align-items: center;
 }
 .navbar-container-right .switch-user {
   border-radius: 50%;
@@ -430,6 +454,33 @@ button {
   background-color: transparent;
   border: 1px solid #333333;
   cursor: pointer;
+}
+.navbar-container-right button.create-profile {
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.8rem;
+  background-color: #F0F0F0;
+  color: #000000;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  font-family: inherit;
+}
+.navbar-container-right button.create-profile:hover {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+}
+@media (max-width: 550px) {
+  .navbar-container-right button.create-profile span {
+    display: none;
+  }
 }
 .navbar-container .profile-container-avatar {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);

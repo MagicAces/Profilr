@@ -1,20 +1,20 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import session from "express-session";
-import passport from "passport";
-import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+// import passport from "passport";
+// import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import path from "path";
 
-import { User } from "@prisma/client";
+// import { User } from "@prisma/client";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware";
 
-import userRouter from "./routes/userRoutes";
+import studentRouter from "./routes/studentRoutes";
 import courseRouter from "./routes/courseRoutes";
 import programRouter from "./routes/programRoutes";
 
-import { googleStrategy } from "./utils/strategy";
+// import { googleStrategy } from "./utils/strategy";
 
 dotenv.config();
 const port = process.env.PORT || 5000;
@@ -31,47 +31,47 @@ app.use(
     credentials: true,
   })
 );
-app.use(
-  session({
-    secret: process.env.SECRET || "",
-    resave: true,
-    saveUninitialized: true,
-    rolling: true,
-    cookie: {
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      secure: process.env.NODE_ENV !== "production",
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.SECRET || "",
+//     resave: true,
+//     saveUninitialized: true,
+//     rolling: true,
+//     cookie: {
+//       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+//       secure: process.env.NODE_ENV !== "production",
+//     },
+//   })
+// );
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-      callbackURL: `${
-        process.env.SERVER_URL || ""
-      }/api/users/auth/google/welcome`,
-    },
-    googleStrategy
-  )
-);
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: process.env.GOOGLE_CLIENT_ID || "",
+//       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+//       callbackURL: `${
+//         process.env.SERVER_URL || ""
+//       }/api/users/auth/google/welcome`,
+//     },
+//     googleStrategy
+//   )
+// );
 
-passport.serializeUser((user, cb) => {
-  cb(null, {
-    id: user.id,
-    username: user.username,
-  });
-});
+// passport.serializeUser((user, cb) => {
+//   cb(null, {
+//     id: user.id,
+//     username: user.username,
+//   });
+// });
 
-passport.deserializeUser((user, cb) => {
-  cb(null, user as User);
-});
+// passport.deserializeUser((user, cb) => {
+//   cb(null, user as User);
+// });
 
-app.use("/api/users", userRouter);
+app.use("/api/students", studentRouter);
 app.use("/api/programs", programRouter);
 app.use("/api/courses", courseRouter);
 

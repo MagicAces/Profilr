@@ -18,6 +18,7 @@ export const getPrograms = asyncHandler(async (req: Request, res: Response) => {
         }
   } catch (error) {
       res.status(404);
+    console.log(error);
       throw new Error("Error fetching programs")
   }
 });

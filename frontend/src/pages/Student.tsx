@@ -20,14 +20,14 @@ const Student = () => {
   useEffect(() => {
     if (isNaN(Number(id))) {
       toast.error("Not a valid id");
-      navigate("/admin", { replace: true });
+      navigate("/", { replace: true });
     }
 
     const student = students.find((s: StudentProfile) => s.id === Number(id));
 
     if (student === undefined) {
       // toast.error("Student not found");
-      navigate("/admin", { replace: true });
+      navigate("/", { replace: true });
     } else {
       dispatch(setStudent(student));
     }

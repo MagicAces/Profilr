@@ -10,22 +10,25 @@ import Navbar from "../components/Navbar";
 import Starfield from "react-starfield";
 
 import "../css/edit.css";
-import { useNavigate } from "react-router";
-import { setCredentials } from "../redux/features/auth/authSlice";
-import { useGetProfileQuery } from "../redux/features/user/userApiSlice";
+import { useParams } from "react-router";
+// import { setCredentials } from "../redux/features/auth/authSlice";
+// import { useGetProfileQuery, useGetStudentQuery } from "../redux/features/user/userApiSlice";
 import Loader from "../components/Utils/Loader";
 import { toast } from "react-toastify";
 import Skeleton from "react-loading-skeleton";
+import { useGetStudentQuery } from "../redux/features/student/studentApiSlice";
+import { setStudent } from "../redux/features/student/studentSlice";
 
 const Edit = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const { id } = useParams();
 
   const {
-    data: user,
-    error: userError,
-    isLoading: userLoading,
-  } = useGetProfileQuery(null, {
+    data: student,
+    error: studentError,
+    isLoading: studentLoading,
+  } = useGetStudentQuery(id, {
     pollingInterval: 5 * 1000,
     refetchOnReconnect: true,
   });
@@ -39,34 +42,35 @@ const Edit = () => {
   });
 
   useEffect(() => {
-    if (!userLoading && userError) {
-      toast.error("Error Fetching User", { toastId: "E4" });
-      navigate("/");
+    if (!studentLoading && studentError) {
+      toast.error("Error Fetching Student", { toastId: "E4" });
+      // navigate("/");
     }
-    if (!userLoading && !userError && user) {
-      dispatch(setCredentials(user?.user));
-      const { student } = user?.user;
+    if (!studentLoading && !studentError && student) {
+      dispatch(setStudent(student?.student));
+      const { student: newStudent } = student;
 
       dispatch(
         fillStudent({
-          first_name: student?.first_name ?? "",
-          last_name: student?.last_name ?? "",
-          other_name: student?.other_name ?? "",
-          email: student?.email ?? "",
-          phone_no: student?.phone_no ?? "",
-          gender: student?.gender?.toLowerCase() ?? "",
-          level: student?.level?.toString() ?? "",
+          first_name: newStudent?.first_name ?? "",
+          last_name: newStudent?.last_name ?? "",
+          other_name: newStudent?.other_name ?? "",
+          email: newStudent?.email ?? "",
+          phone_no: newStudent?.phone_no ?? "",
+          gender: newStudent?.gender?.toLowerCase() ?? "",
+          level: newStudent?.level?.toString() ?? "",
           semester:
-            student?.courses?.length > 0 ? student?.courses[0]?.semester : 0,
-          index_number: student?.index_number ?? 0,
-          reference_no: student?.reference_no ?? 0,
-          program_id: student?.program?.id ?? 0,
-          course_ids: student?.courses?.map((course: any) => course?.id) ?? [],
-          image: student?.image_url ?? "",
+            newStudent?.courses?.length > 0 ? newStudent?.courses[0]?.semester : 0,
+          index_number: newStudent?.index_number ?? 0,
+          reference_no: newStudent?.reference_no ?? 0,
+          program_id: newStudent?.program?.id ?? 0,
+          course_ids: newStudent?.courses?.map((course: any) => course?.id) ?? [],
+          image: newStudent?.image_url ?? "",
+          // id: student?.id ?? 0
         })
       );
     }
-  }, [dispatch, userLoading, userError, user]);
+  }, [dispatch, studentLoading, studentError, student]);
 
   useEffect(() => {
     if (!programsLoading && !programsError && programs)
@@ -81,10 +85,10 @@ const Edit = () => {
         speedFactor={0.4}
         backgroundColor="black"
       />
-      {userLoading && <Loader />}
+      {studentLoading && <Loader />}
       <div className="edit-container">
         <Navbar />
-        {!userLoading && !userError ? (
+        {!studentLoading && !studentError ? (
           <Content />
         ) : (
           <Skeleton

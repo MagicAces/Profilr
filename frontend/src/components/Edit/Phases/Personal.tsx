@@ -25,6 +25,7 @@ const Personal = () => {
   const { student }: { student: StudentInput } = useSelector(
     (state: any) => state.profile
   );
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [warning, setWarning] = useState({

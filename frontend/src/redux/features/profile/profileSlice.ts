@@ -10,6 +10,7 @@ import {
 const initialState: ProfileState = {
   phase: 1,
   student: {
+    id: 0,
     first_name: "",
     last_name: "",
     other_name: "",
@@ -31,7 +32,7 @@ const initialState: ProfileState = {
     program_id: 0,
     semester: 0,
   },
-  loading: false
+  loading: false,
 };
 
 const profileSlice = createSlice({
@@ -43,6 +44,7 @@ const profileSlice = createSlice({
     },
     fillStudent: (state, action: PayloadAction<StudentInput>) => {
       state.student = action.payload;
+      console.log(action.payload);
     },
     setCourses: (state, action: PayloadAction<Course[]>) => {
       state.courses = action.payload;
@@ -81,7 +83,7 @@ const profileSlice = createSlice({
         reference_no: 0,
         program_id: 0,
         course_ids: [],
-        image: ""
+        image: "",
       };
       state.courses = [];
       state.programs = [];

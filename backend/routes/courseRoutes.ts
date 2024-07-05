@@ -1,12 +1,12 @@
 import { Router } from "express";
 import * as course from "../controllers/courseController";
-import { protect } from "../middlewares/authMiddleware";
+import { shield } from "../middlewares/authMiddleware";
 
 const router = Router();
 
 router
   .route("/")
-  .get(protect, course.getCourses)
-  .post(protect, course.addCourse)
+  .get(shield, course.getCourses)
+  .post(shield, course.addCourse)
 
 export default router;

@@ -29,8 +29,8 @@ const Requests = () => {
               }}
             />
           ))
-        ) : students.filter((student: StudentProfile) => student.status === "Pending").length > 0 ? (
-          students.filter((student: StudentProfile) => student.status === "Pending").map((student: StudentProfile, index: number) => (
+        ) : students.length > 0 ? (
+          students.map((student: StudentProfile, index: number) => (
             <div
               className="student-card"
               onClick={() => navigate(`/admin/student/${student?.id}`)}

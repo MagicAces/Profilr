@@ -1,63 +1,72 @@
 import Skeleton from "react-loading-skeleton";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { StudentProfile } from "../../../types";
-import { MdCircle, MdClose, MdHome, MdOutlineCheck } from "react-icons/md";
-import { useApproveProfileMutation } from "../../../redux/features/user/userApiSlice";
-import { toast } from "react-toastify";
+import {MdHome } from "react-icons/md";
+// import { useApproveProfileMutation } from "../../../redux/features/user/userApiSlice";
+// import { toast } from "react-toastify";
 
-import { setLoading } from "../../../redux/features/student/studentSlice";
-import Loader from "../../Utils/Loader";
+// import { setLoading } from "../../../redux/features/student/studentSlice";
+// import Loader from "../../Utils/Loader";
+import { TbUserEdit } from "react-icons/tb";
 
 const Personal = () => {
   const { student, loading }: { student: StudentProfile; loading: boolean } =
     useSelector((state: any) => state.student);
-  const [approve, { isLoading: approveLoading }] = useApproveProfileMutation();
-  const dispatch = useDispatch();
+  // const [approve, { isLoading: approveLoading }] = useApproveProfileMutation();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const view = queryParams.get("view");
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // const view = queryParams.get("view");
 
-  const handleApprove = async (status: boolean) => {
-    try {
-      const res = await approve({
-        secret: import.meta.env.VITE_ADMIN_SECRET,
-        student_id: student.id,
-        approved: status ? "true" : "false",
-      }).unwrap();
-      toast.success(res.message);
-      dispatch(setLoading(true));
-      navigate("/admin", { replace: true });
-    } catch (error: any) {
-      toast.error(error?.data?.message || error?.message);
-    }
-  };
+  // const handleApprove = async (status: boolean) => {
+  //   try {
+  //     const res = await approve({
+  //       secret: import.meta.env.VITE_ADMIN_SECRET,
+  //       student_id: student.id,
+  //       approved: status ? "true" : "false",
+  //     }).unwrap();
+  //     toast.success(res.message);
+  //     dispatch(setLoading(true));
+  //     navigate("/", { replace: true });
+  //   } catch (error: any) {
+  //     toast.error(error?.data?.message || error?.message);
+  //   }
+  // };
   return (
     <>
-      {approveLoading && <Loader />}
+      {/* {approveLoading && <Loader />} */}
       <div className="student-container-personal">
         <div className="header">
           <div>
             <h3 className="heading">Personal Details</h3>
-            {view && (
+            {/* {view && (
               <div className={`status ${student?.status?.toLowerCase()}`}>
                 <MdCircle />
                 <span>{student?.status}</span>
               </div>
-            )}
+            )} */}
           </div>
           {!loading && (
             <div className="action-buttons">
               <button
                 type="button"
                 className="home-button"
-                onClick={() => navigate("/admin")}
+                onClick={() => navigate("/")}
               >
                 <MdHome />
                 <span>Home</span>
               </button>
-              {!view && (
+              <button
+                type="button"
+                className="edit-button"
+                onClick={() => navigate(`/student/${student.id}/edit`)}
+              >
+                <TbUserEdit />
+                <span>Edit</span>
+              </button>
+              {/* {!view && (
                 <>
                   <button
                     type="button"
@@ -76,7 +85,7 @@ const Personal = () => {
                     <span>Reject</span>
                   </button>
                 </>
-              )}
+              )} */}
             </div>
           )}
         </div>

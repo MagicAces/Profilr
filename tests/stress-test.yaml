@@ -1,0 +1,13 @@
+config:
+  target: "https://profilr.onrender.com/"
+  phases:
+    - duration: 60
+      arrivalRate: 20
+scenarios:
+  - flow:
+      - get:
+          url: "/api/users"
+      - post:
+          url: "/api/another-endpoint"
+          json:
+            key: "value"

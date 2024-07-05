@@ -7,6 +7,7 @@ import Picture from "./Phases/Picture";
 
 const Content = () => {
   const { phase } = useSelector((state: any) => state.profile);
+  
   return (
     <>
       <div className="edit-container-content">

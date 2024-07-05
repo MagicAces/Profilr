@@ -21,8 +21,9 @@ import { canvasPreview } from "../../../utils/canvasPreview";
 import { blobToBase64 } from "../../../utils/funct";
 import { StudentInput } from "../../../types";
 import { useNavigate } from "react-router";
-import { useCreateProfileMutation } from "../../../redux/features/user/userApiSlice";
+// import { useCreateProfileMutation } from "../../../redux/features/user/userApiSlice";
 import { apiSlice } from "../../../redux/features/apiSlice";
+import { useCreateStudentMutation } from "../../../redux/features/student/studentApiSlice";
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -57,31 +58,31 @@ const Picture = () => {
   const [loader, setLoader] = useState(false);
   const [modelsLoaded, isModelsLoaded] = useState(false);
 
-  const [createProfile, { isLoading: createLoading }] =
-    useCreateProfileMutation();
+  const [createStudent, { isLoading: createLoading }] =
+    useCreateStudentMutation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadModels = async () => {
-      const MODEL_URL = "/models";
-      Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-      ])
-        .then(() => {
-          console.log("hello");
-          isModelsLoaded(true);
-        })
-        .catch((err) => console.log(err));
-    };
+  // useEffect(() => {
+  //   const loadModels = async () => {
+  //     const MODEL_URL = "/models";
+  //     Promise.all([
+  //       faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+  //       faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+  //       faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+  //       faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+  //       faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
+  //     ])
+  //       .then(() => {
+  //         console.log("hello");
+  //         isModelsLoaded(true);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   };
 
-    loadModels();
-  }, []);
+  //   loadModels();
+  // }, []);
 
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
@@ -89,9 +90,9 @@ const Picture = () => {
     if (!file) return;
 
     // Check file size
-    if (file.size > 4 * 1024 * 1024) {
+    if (file.size > 10 * 1024 * 1024) {
       // 1MB limit
-      toast.error("File size should be less than 4MB");
+      toast.error("File size should be less than 10MB");
       return;
     }
     setCrop(undefined);
@@ -149,18 +150,18 @@ const Picture = () => {
     });
 
     if (blob) {
-      const facesDetected = await validateFace(blob);
-      if (facesDetected === 0) {
-        setLoader(false);
-        toast.error("No face detected");
-        return;
-      }
+      // const facesDetected = await validateFace(blob);
+      // if (facesDetected === 0) {
+      //   setLoader(false);
+      //   toast.error("No face detected");
+      //   return;
+      // }
 
-      if (facesDetected > 1) {
-        setLoader(false);
-        toast.error(`Multiple faces (${facesDetected}) detected`);
-        return;
-      }
+      // if (facesDetected > 1) {
+      //   setLoader(false);
+      //   toast.error(`Multiple faces (${facesDetected}) detected`);
+      //   return;
+      // }
       dispatch(fillStudent({ ...student, image: await blobToBase64(blob) }));
     }
     // setCompletedCrop(undefined);
@@ -183,25 +184,25 @@ const Picture = () => {
     100,
     [completedCrop]
   );
-  const validateFace = async (imageBlob: Blob): Promise<number> => {
-    if (!modelsLoaded) return 0;
-    try {
-      const image = await faceapi.bufferToImage(imageBlob);
+  // const validateFace = async (imageBlob: Blob): Promise<number> => {
+  //   if (!modelsLoaded) return 0;
+  //   try {
+  //     const image = await faceapi.bufferToImage(imageBlob);
 
-      const detections = await faceapi.detectAllFaces(
-        image
-        // new faceapi.TinyFaceDetectorOptions({
-        //   inputSize: 512,
-        //   scoreThreshold: 0.5,
-        // })
-      );
-      console.log("Face detection result:", detections);
-      return detections.length;
-    } catch (error) {
-      console.error("Error during face detection:", error);
-      return 0;
-    }
-  };
+  //     const detections = await faceapi.detectAllFaces(
+  //       image
+  //       // new faceapi.TinyFaceDetectorOptions({
+  //       //   inputSize: 512,
+  //       //   scoreThreshold: 0.5,
+  //       // })
+  //     );
+  //     console.log("Face detection result:", detections);
+  //     return detections.length;
+  //   } catch (error) {
+  //     console.error("Error during face detection:", error);
+  //     return 0;
+  //   }
+  // };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -212,7 +213,7 @@ const Picture = () => {
     }
 
     try {
-      const res = await createProfile(student).unwrap();
+      const res = await createStudent(student).unwrap();
       toast.success(res.message);
       navigate("/", { replace: true });
       dispatch(clearProfile());
@@ -281,7 +282,9 @@ const Picture = () => {
               // minWidth={400}
               minHeight={412}
               minWidth={294}
-              locked={true}
+              locked={false}
+              maxHeight={420}
+              maxWidth={302}
               // circularCrop
             >
               <img
@@ -318,8 +321,8 @@ const Picture = () => {
               src={student.image}
               style={{
                 objectFit: "contain",
-                width: completedCrop?.width || "100%",
-                height: completedCrop?.height ?? "auto",
+                width: "294px",
+                height: "412px",
               }}
             />
           </div>

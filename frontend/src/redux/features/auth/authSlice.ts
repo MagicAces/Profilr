@@ -10,7 +10,10 @@ const initialState: AuthState = {
     localStorage.getItem("userInfo") !== null
       ? JSON.parse(localStorage.getItem("userInfo") as string)
       : null,
-  isAdmin: false,
+  isAdmin:
+    localStorage.getItem("isAdmin") !== null
+      ? JSON.parse(localStorage.getItem("isAdmin") as string)
+      : false,
 };
 
 const authSlice = createSlice({
@@ -26,6 +29,10 @@ const authSlice = createSlice({
     },
     setIsAdmin: (state, action: PayloadAction<boolean>) => {
       state.isAdmin = action.payload;
+
+      localStorage.setItem("isAdmin", JSON.stringify(action.payload));
+      const expirationTime = new Date().getTime() + 30 * 60 * 1000; // 30 minutes
+      localStorage.setItem("expirationTime", expirationTime.toString());
     },
     logout: (state) => {
       state.userInfo = null;

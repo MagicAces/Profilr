@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setTab } from "../../redux/features/student/studentSlice";
-import { StudentProfile } from "../../types";
+// import { StudentProfile } from "../../types";
 
 const Tabs = () => {
   const { tab, students } = useSelector((state: any) => state.student);
@@ -15,9 +15,11 @@ const Tabs = () => {
         >
           Requests (
           {
-            students.filter(
-              (student: StudentProfile) => student.status === "Pending"
-            ).length
+            students
+            //   .filter(
+            //   (student: StudentProfile) => student.status === "Pending"
+            // )
+              .length
           }
           )
         </div>{" "}

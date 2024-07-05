@@ -9,23 +9,23 @@ datasource db {
   
 }
 
-model User {
-  id             Int       @id @default(autoincrement())
-  email          String    @unique
-  googleID       String    @unique
-  username       String    
-  lastLogin      DateTime
-  accessToken    String?
-  refreshToken   String?
-  provider       String
-  photo          String?
-  created_on     DateTime  @default(now()) 
-  updated_at     DateTime  @updatedAt
-  student        Student?
+// model User {
+//   id             Int       @id @default(autoincrement())
+//   email          String    @unique
+//   googleID       String    @unique
+//   username       String    
+//   lastLogin      DateTime
+//   accessToken    String?
+//   refreshToken   String?
+//   provider       String
+//   photo          String?
+//   created_on     DateTime  @default(now()) 
+//   updated_at     DateTime  @updatedAt
+//   // student        Student?
 
 
-  @@map("users")
-}
+//   @@map("users")
+// }
 
 model Student {
   id             Int       @id @default(autoincrement())
@@ -40,15 +40,15 @@ model Student {
   index_number   Int       @unique
   image_url      String  
   image_key      String
-  status         UserStatus @default(Pending) 
+  // status         UserStatus @default(Pending) 
   reference_no   Int       @unique
   created_on     DateTime  @default(now()) 
   updated_at     DateTime  @updatedAt
-  user_id        Int       @unique
+  // user_id        Int       @unique
   courses        Course[]
   
   
-  user           User      @relation(fields: [user_id], references: [id])
+  // user           User      @relation(fields: [user_id], references: [id])
   program        Program   @relation(fields: [program_id], references: [id])
   @@map("students")
 }
@@ -93,10 +93,10 @@ enum Gender {
   @@map("gender")
 }
 
-enum UserStatus {
-  Pending
-  Approved
-  Rejected
+// enum UserStatus {
+//   Pending
+//   Approved
+//   Rejected
 
-  @@map("user_status")
-}
+//   @@map("user_status")
+// }

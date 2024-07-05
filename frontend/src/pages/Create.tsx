@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useGetProgramsQuery } from "../redux/features/profile/profileApiSlice";
 import { useEffect } from "react";
 import {
@@ -9,9 +9,9 @@ import Navbar from "../components/Navbar";
 import Starfield from "react-starfield";
 
 import "../css/create.css";
-import { Navigate } from "react-router";
+// import { Navigate } from "react-router";
 const Create = () => {
-  const { userInfo } = useSelector((state: any) => state.auth);
+  // const { userInfo } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   const {
     data: programs,
@@ -22,7 +22,7 @@ const Create = () => {
     refetchOnReconnect: true,
   });
 
-  if (userInfo?.student) return <Navigate to="/" replace />;
+  // if (userInfo?.student) return <Navigate to="/" replace />;
 
   useEffect(() => {
     if (!programsLoading && !programsError && programs)
