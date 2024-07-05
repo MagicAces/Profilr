@@ -282,9 +282,9 @@ const Picture = () => {
               // minWidth={400}
               minHeight={412}
               minWidth={294}
-              locked={false}
-              maxHeight={420}
-              maxWidth={302}
+              locked={true}
+              // maxHeight={420}
+              // maxWidth={302}
               // circularCrop
             >
               <img
@@ -321,8 +321,8 @@ const Picture = () => {
               src={student.image}
               style={{
                 objectFit: "contain",
-                width: "294px",
-                height: "412px",
+                width:  completedCrop?.width || "100%",
+                height:  completedCrop?.height || "auto",
               }}
             />
           </div>
