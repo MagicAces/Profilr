@@ -103,7 +103,7 @@ const Picture = () => {
     }
   }
 
-  function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+  async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
 
     if (!file) return;
@@ -114,23 +114,25 @@ const Picture = () => {
       toast.error("File size should be less than 10MB");
       return;
     }
+
+    // Handle HEIF/HEIC files
+    if (file.type === "image/heic" || file.type === "image/heif") {
+      try {
+        const blob = await heic2any({ blob: file, toType: "image/jpeg" });
+        setImgSrc(URL.createObjectURL(blob as Blob));
+      } catch (error) {
+        toast.error("Error converting HEIF image.");
+        return;
+      }
+    } else {
+      const reader = new FileReader();
+      reader.addEventListener("load", () =>
+        setImgSrc(reader.result?.toString() || "")
+      );
+      reader.readAsDataURL(file);
+    }
     setCrop(undefined);
     dispatch(fillStudent({ ...student, image: "" }));
-    // const reader = new FileReader();
-    // reader.addEventListener("load", () =>
-    //   setImgSrc(reader.result?.toString() || "")
-    // );
-    const reader = new FileReader();
-
-    reader.addEventListener("load", async () => {
-      if (file.type === "image/heic" || file.type === "image/heif") {
-        handleHEICConversion(file);
-      } else {
-        setImgSrc(reader.result?.toString() || "");
-      }
-    });
-
-    reader.readAsDataURL(file);
   }
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
@@ -158,17 +160,15 @@ const Picture = () => {
     );
     const ctx = offscreen.getContext("2d");
     if (!ctx) {
-      console.error("No 2d context");
-      setLoader(false);
-      return;
+      throw new Error("No 2d context");
     }
 
     ctx.drawImage(
-      image,
-      completedCrop.x * scaleX,
-      completedCrop.y * scaleY,
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY,
+      previewCanvas,
+      0,
+      0,
+      previewCanvas.width,
+      previewCanvas.height,
       0,
       0,
       offscreen.width,
@@ -297,7 +297,7 @@ const Picture = () => {
             <input
               id="inputTag"
               type="file"
-              accept="image/*"
+              accept=".jpg, .png, .jpeg, .heic, .heif"
               onChange={onSelectFile}
               // capture="environment"
             />
