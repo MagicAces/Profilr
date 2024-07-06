@@ -322,7 +322,7 @@ const Picture = () => {
               style={{
                 objectFit: "contain",
                 width:  completedCrop?.width || "100%",
-                height:  completedCrop?.height || "auto",
+                height:  completedCrop?.height ?? "auto",
               }}
             />
           </div>
