@@ -111,6 +111,7 @@ const Picture = () => {
             blob: file,
             toType: "image/jpeg",
           });
+          
           const blob = Array.isArray(convertedBlob)
             ? convertedBlob[0]
             : convertedBlob;
@@ -291,7 +292,7 @@ const Picture = () => {
             <input
               id="inputTag"
               type="file"
-              accept=".jpg, .png, .jpeg .heic .heif"
+              accept="image/*"
               onChange={onSelectFile}
               // capture="environment"
             />
@@ -346,8 +347,11 @@ const Picture = () => {
               src={student.image}
               style={{
                 objectFit: "contain",
-                width:  completedCrop?.width || "100%",
-                height:  completedCrop?.height ?? "auto",
+                // width: completedCrop?.width || "100%",
+                // height: completedCrop?.height ?? "auto",
+
+                width: "412px",
+                height: "294px",
               }}
             />
           </div>

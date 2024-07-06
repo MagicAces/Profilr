@@ -136,6 +136,7 @@ const Picture = () => {
             blob: file,
             toType: "image/jpeg",
           });
+          
           const blob = Array.isArray(convertedBlob)
             ? convertedBlob[0]
             : convertedBlob;
@@ -153,7 +154,6 @@ const Picture = () => {
 
     reader.readAsDataURL(file);
   }
-
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const { width, height } = e.currentTarget;
@@ -353,7 +353,7 @@ const Picture = () => {
             <input
               id="inputTag"
               type="file"
-              accept=".jpg, .png, .jpeg .heic .heif"
+              accept="image/*"
               onChange={onSelectFile}
               // capture="environment"
             />
@@ -379,7 +379,7 @@ const Picture = () => {
                 alt="Crop me"
                 src={imgSrc}
                 onLoad={onImageLoad}
-                fetchPriority="high"
+                // fetchPriority="high"
               />
             </ReactCrop>
           </div>
@@ -409,8 +409,8 @@ const Picture = () => {
               style={{
                 objectFit: "contain",
 
-                width: completedCrop?.width || "100%",
-                height: completedCrop?.height ?? "auto",
+                width: "412px",
+                height: "294px",
               }}
             />
           </div>
