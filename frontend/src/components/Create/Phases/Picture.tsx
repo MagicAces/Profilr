@@ -24,6 +24,7 @@ import { useNavigate } from "react-router";
 // import { useCreateProfileMutation } from "../../../redux/features/user/userApiSlice";
 import { apiSlice } from "../../../redux/features/apiSlice";
 import { useCreateStudentMutation } from "../../../redux/features/student/studentApiSlice";
+import heic2any from "heic2any";
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -97,10 +98,31 @@ const Picture = () => {
     }
     setCrop(undefined);
     dispatch(fillStudent({ ...student, image: "" }));
+    // const reader = new FileReader();
+    // reader.addEventListener("load", () =>
+    //   setImgSrc(reader.result?.toString() || "")
+    // );
     const reader = new FileReader();
-    reader.addEventListener("load", () =>
-      setImgSrc(reader.result?.toString() || "")
-    );
+
+    reader.addEventListener("load", async () => {
+      if (file.type === "image/heic" || file.type === "image/heif") {
+        try {
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+          });
+          const convertedReader = new FileReader();
+          convertedReader.onload = () =>
+            setImgSrc(convertedReader.result?.toString() || "");
+          convertedReader.readAsDataURL(convertedBlob);
+        } catch (error) {
+          toast.error("Failed to convert HEIC image");
+        }
+      } else {
+        setImgSrc(reader.result?.toString() || "");
+      }
+    });
+
     reader.readAsDataURL(file);
   }
 
@@ -266,7 +288,7 @@ const Picture = () => {
             <input
               id="inputTag"
               type="file"
-              accept=".jpg, .png, .jpeg"
+              accept=".jpg, .png, .jpeg .heic .heif"
               onChange={onSelectFile}
               // capture="environment"
             />
