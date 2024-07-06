@@ -96,36 +96,31 @@ const Picture = () => {
       toast.error("File size should be less than 10MB");
       return;
     }
+    const reader = new FileReader();
 
-    // Handle HEIF/HEIC files
-    if (file.type === "image/heic" || file.type === "image/heif") {
-      try {
-        const convertedBlob = await heic2any({
-          blob: file,
-          toType: "image/jpeg",
-        });
-
-        if (convertedBlob instanceof Blob) {
-          setImgSrc(
-            URL.createObjectURL(
-              Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob
-            )
-          );
-        } else {
-          toast.error("Error converting HEIF image.");
-          return;
+    reader.addEventListener("load", async () => {
+      if (file.type === "image/heic" || file.type === "image/heif") {
+        try {
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+          });
+          const blob = Array.isArray(convertedBlob)
+            ? convertedBlob[0]
+            : convertedBlob;
+          const convertedReader = new FileReader();
+          convertedReader.onload = () =>
+            setImgSrc(convertedReader.result?.toString() || "");
+          convertedReader.readAsDataURL(blob);
+        } catch (error) {
+          toast.error("Failed to convert HEIC image");
         }
-      } catch (error) {
-        toast.error("Error converting HEIF image.");
-        return;
+      } else {
+        setImgSrc(reader.result?.toString() || "");
       }
-    } else {
-      const reader = new FileReader();
-      reader.addEventListener("load", () =>
-        setImgSrc(reader.result?.toString() || "")
-      );
-      reader.readAsDataURL(file);
-    }
+    });
+
+    reader.readAsDataURL(file);
     setCrop(undefined);
     dispatch(fillStudent({ ...student, image: "" }));
   }
