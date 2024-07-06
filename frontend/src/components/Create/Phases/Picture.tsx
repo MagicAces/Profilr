@@ -84,25 +84,7 @@ const Picture = () => {
 
   //   loadModels();
   // }, []);
-  async function handleHEICConversion(file: File) {
-    try {
-      const convertedBlob = await heic2any({
-        blob: file,
-        toType: "image/png",
-      });
-      const blob = Array.isArray(convertedBlob)
-        ? convertedBlob[0]
-        : convertedBlob;
-      const convertedReader = new FileReader();
-      convertedReader.onload = () =>
-        setImgSrc(convertedReader.result?.toString() || "");
-      convertedReader.readAsDataURL(blob);
-    } catch (error) {
-      console.error("HEIC conversion error:", error);
-      toast.error("Failed to convert HEIC image");
-    }
-  }
-
+  
   async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
 
