@@ -25,6 +25,7 @@ import { useNavigate } from "react-router";
 import { isEqual } from "lodash";
 import { apiSlice } from "../../../redux/features/apiSlice";
 import { useUpdateStudentMutation } from "../../../redux/features/student/studentApiSlice";
+import heic2any from "heic2any";
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -89,25 +90,70 @@ const Picture = () => {
   //   loadModels();
   // }, []);
 
+  // function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const file = e.target.files && e.target.files[0];
+
+  //   if (!file) return;
+
+  //   // Check file size
+  //   if (file.size > 4 * 1024 * 1024) {
+  //     // 1MB limit
+  //     toast.error("File size should be less than 4MB");
+  //     return;
+  //   }
+  //   setCrop(undefined);
+  //   dispatch(fillStudent({ ...student, image: "" }));
+  //   const reader = new FileReader();
+  //   reader.addEventListener("load", () =>
+  //     setImgSrc(reader.result?.toString() || "")
+  //   );
+  //   reader.readAsDataURL(file);
+  // }
+
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
 
     if (!file) return;
 
     // Check file size
-    if (file.size > 4 * 1024 * 1024) {
+    if (file.size > 10 * 1024 * 1024) {
       // 1MB limit
-      toast.error("File size should be less than 4MB");
+      toast.error("File size should be less than 10MB");
       return;
     }
     setCrop(undefined);
     dispatch(fillStudent({ ...student, image: "" }));
+    // const reader = new FileReader();
+    // reader.addEventListener("load", () =>
+    //   setImgSrc(reader.result?.toString() || "")
+    // );
     const reader = new FileReader();
-    reader.addEventListener("load", () =>
-      setImgSrc(reader.result?.toString() || "")
-    );
+
+    reader.addEventListener("load", async () => {
+      if (file.type === "image/heic" || file.type === "image/heif") {
+        try {
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+          });
+          const blob = Array.isArray(convertedBlob)
+            ? convertedBlob[0]
+            : convertedBlob;
+          const convertedReader = new FileReader();
+          convertedReader.onload = () =>
+            setImgSrc(convertedReader.result?.toString() || "");
+          convertedReader.readAsDataURL(blob);
+        } catch (error) {
+          toast.error("Failed to convert HEIC image");
+        }
+      } else {
+        setImgSrc(reader.result?.toString() || "");
+      }
+    });
+
     reader.readAsDataURL(file);
   }
+
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const { width, height } = e.currentTarget;

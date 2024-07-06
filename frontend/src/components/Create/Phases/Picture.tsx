@@ -111,10 +111,13 @@ const Picture = () => {
             blob: file,
             toType: "image/jpeg",
           });
+          const blob = Array.isArray(convertedBlob)
+            ? convertedBlob[0]
+            : convertedBlob;
           const convertedReader = new FileReader();
           convertedReader.onload = () =>
             setImgSrc(convertedReader.result?.toString() || "");
-          convertedReader.readAsDataURL(convertedBlob);
+          convertedReader.readAsDataURL(blob);
         } catch (error) {
           toast.error("Failed to convert HEIC image");
         }
