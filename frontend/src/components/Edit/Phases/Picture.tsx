@@ -136,7 +136,7 @@ const Picture = () => {
             blob: file,
             toType: "image/jpeg",
           });
-          
+
           const blob = Array.isArray(convertedBlob)
             ? convertedBlob[0]
             : convertedBlob;
@@ -180,20 +180,37 @@ const Picture = () => {
     );
     const ctx = offscreen.getContext("2d");
     if (!ctx) {
-      throw new Error("No 2d context");
+      console.error("No 2d context");
+      setLoader(false);
+      return;
     }
 
     ctx.drawImage(
-      previewCanvas,
-      0,
-      0,
-      previewCanvas.width,
-      previewCanvas.height,
+      image,
+      completedCrop.x * scaleX,
+      completedCrop.y * scaleY,
+      completedCrop.width * scaleX,
+      completedCrop.height * scaleY,
       0,
       0,
       offscreen.width,
       offscreen.height
     );
+    // if (!ctx) {
+    //   throw new Error("No 2d context");
+    // }
+
+    // ctx.drawImage(
+    //   previewCanvas,
+    //   0,
+    //   0,
+    //   previewCanvas.width,
+    //   previewCanvas.height,
+    //   0,
+    //   0,
+    //   offscreen.width,
+    //   offscreen.height
+    // );
     // You might want { type: "image/jpeg", quality: <0 to 1> } to
     // reduce image size
     const blob = await offscreen.convertToBlob({

@@ -84,6 +84,24 @@ const Picture = () => {
 
   //   loadModels();
   // }, []);
+  async function handleHEICConversion(file: File) {
+    try {
+      const convertedBlob = await heic2any({
+        blob: file,
+        toType: "image/png",
+      });
+      const blob = Array.isArray(convertedBlob)
+        ? convertedBlob[0]
+        : convertedBlob;
+      const convertedReader = new FileReader();
+      convertedReader.onload = () =>
+        setImgSrc(convertedReader.result?.toString() || "");
+      convertedReader.readAsDataURL(blob);
+    } catch (error) {
+      console.error("HEIC conversion error:", error);
+      toast.error("Failed to convert HEIC image");
+    }
+  }
 
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
@@ -106,22 +124,7 @@ const Picture = () => {
 
     reader.addEventListener("load", async () => {
       if (file.type === "image/heic" || file.type === "image/heif") {
-        try {
-          const convertedBlob = await heic2any({
-            blob: file,
-            toType: "image/jpeg",
-          });
-          
-          const blob = Array.isArray(convertedBlob)
-            ? convertedBlob[0]
-            : convertedBlob;
-          const convertedReader = new FileReader();
-          convertedReader.onload = () =>
-            setImgSrc(convertedReader.result?.toString() || "");
-          convertedReader.readAsDataURL(blob);
-        } catch (error) {
-          toast.error("Failed to convert HEIC image");
-        }
+        handleHEICConversion(file);
       } else {
         setImgSrc(reader.result?.toString() || "");
       }
@@ -155,15 +158,17 @@ const Picture = () => {
     );
     const ctx = offscreen.getContext("2d");
     if (!ctx) {
-      throw new Error("No 2d context");
+      console.error("No 2d context");
+      setLoader(false);
+      return;
     }
 
     ctx.drawImage(
-      previewCanvas,
-      0,
-      0,
-      previewCanvas.width,
-      previewCanvas.height,
+      image,
+      completedCrop.x * scaleX,
+      completedCrop.y * scaleY,
+      completedCrop.width * scaleX,
+      completedCrop.height * scaleY,
       0,
       0,
       offscreen.width,
