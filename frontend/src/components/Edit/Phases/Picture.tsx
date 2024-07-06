@@ -92,12 +92,12 @@ const Picture = () => {
 
   async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
+    console.log(file);
 
     if (!file) return;
 
     // Check file size
     if (file.size > 10 * 1024 * 1024) {
-      // 1MB limit
       toast.error("File size should be less than 10MB");
       return;
     }
@@ -105,8 +105,21 @@ const Picture = () => {
     // Handle HEIF/HEIC files
     if (file.type === "image/heic" || file.type === "image/heif") {
       try {
-        const blob = await heic2any({ blob: file, toType: "image/jpeg" });
-        setImgSrc(URL.createObjectURL(blob as Blob));
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+        });
+
+        if (convertedBlob instanceof Blob) {
+          setImgSrc(
+            URL.createObjectURL(
+              Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob
+            )
+          );
+        } else {
+          toast.error("Error converting HEIF image.");
+          return;
+        }
       } catch (error) {
         toast.error("Error converting HEIF image.");
         return;
@@ -118,9 +131,9 @@ const Picture = () => {
       );
       reader.readAsDataURL(file);
     }
+
     setCrop(undefined);
     dispatch(fillStudent({ ...student, image: "" }));
-   
   }
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {

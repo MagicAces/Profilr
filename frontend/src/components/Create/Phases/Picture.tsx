@@ -84,7 +84,7 @@ const Picture = () => {
 
   //   loadModels();
   // }, []);
-  
+
   async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
 
@@ -100,8 +100,21 @@ const Picture = () => {
     // Handle HEIF/HEIC files
     if (file.type === "image/heic" || file.type === "image/heif") {
       try {
-        const blob = await heic2any({ blob: file, toType: "image/jpeg" });
-        setImgSrc(URL.createObjectURL(blob as Blob));
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+        });
+
+        if (convertedBlob instanceof Blob) {
+          setImgSrc(
+            URL.createObjectURL(
+              Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob
+            )
+          );
+        } else {
+          toast.error("Error converting HEIF image.");
+          return;
+        }
       } catch (error) {
         toast.error("Error converting HEIF image.");
         return;

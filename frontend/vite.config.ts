@@ -6,12 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    proxy: {
-      "/api": {
-        // target: "https://profilr.onrender.com",
-        target: "https://localhost:5000",
-        changeOrigin: true,
-      },
-    },
-  },
+  //   proxy: {
+  //     "/api": {
+  //       // target: "https://profilr.onrender.com",
+  //       target: "https://localhost:5000",
+  //       changeOrigin: true,
+  //     },
+  //   },
+  // },
 });
