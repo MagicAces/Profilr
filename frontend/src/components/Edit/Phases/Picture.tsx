@@ -353,7 +353,7 @@ const Picture = () => {
             <input
               id="inputTag"
               type="file"
-              accept=".jpg, .png, .jpeg"
+              accept=".jpg, .png, .jpeg .heic .heif"
               onChange={onSelectFile}
               // capture="environment"
             />
