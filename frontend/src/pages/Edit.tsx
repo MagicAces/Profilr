@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useGetProgramsQuery } from "../redux/features/profile/profileApiSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   fillStudent,
   setPrograms,
@@ -11,6 +11,7 @@ import Starfield from "react-starfield";
 
 import "../css/edit.css";
 import { useParams } from "react-router";
+import {useNavigate} from "react-router-dom";
 // import { setCredentials } from "../redux/features/auth/authSlice";
 // import { useGetProfileQuery, useGetStudentQuery } from "../redux/features/user/userApiSlice";
 import Loader from "../components/Utils/Loader";
@@ -21,6 +22,8 @@ import { setStudent } from "../redux/features/student/studentSlice";
 
 const Edit = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [edit, setEdit] = useState(false);
   // const navigate = useNavigate();
   const { id } = useParams();
 
@@ -77,6 +80,19 @@ const Edit = () => {
       dispatch(setPrograms(programs?.programs));
   }, [dispatch, programsLoading, programsError]);
 
+  useEffect(() => {
+     const response = window.prompt("Enter the edit password:", "");
+
+    if (response === import.meta.env.VITE_ADMIN_EDIT_PASSWORD) {
+      setEdit(true);
+    } else {
+      if (!response) toast.error("Password required");
+      else toast.error("Invalid Password");
+      setEdit(false);
+      navigate("/");
+    }
+  }, []);
+
   return (
     <>
       <Starfield
@@ -88,7 +104,7 @@ const Edit = () => {
       {studentLoading && <Loader />}
       <div className="edit-container">
         <Navbar />
-        {!studentLoading && !studentError ? (
+        {!studentLoading && !studentError && edit ? (
           <Content />
         ) : (
           <Skeleton
