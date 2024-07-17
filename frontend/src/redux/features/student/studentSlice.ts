@@ -6,6 +6,7 @@ const initialState: StudentState = {
   loading: false,
   student: {},
   tab: 1,
+  search: "",
 };
 
 const studentSlice = createSlice({
@@ -24,16 +25,20 @@ const studentSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setSearch: (state, action: PayloadAction<string>) => {
+      state.search = action.payload;
+    },
     clearStudents: (state) => {
       state.students = [];
       state.loading = false;
       state.student = {};
       state.tab = 1;
+      state.search = "";
     },
   },
 });
 
-export const { setStudents, setStudent, setLoading, setTab, clearStudents } =
+export const { setStudents, setStudent, setLoading, setTab,  setSearch, clearStudents } =
   studentSlice.actions;
 
 export default studentSlice.reducer;

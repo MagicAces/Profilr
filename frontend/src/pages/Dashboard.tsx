@@ -9,9 +9,10 @@ import Navbar from "../components/Navbar";
 import Content from "../components/Dashboard/Content";
 import "../css/dashboard.css";
 import { useGetStudentsQuery } from "../redux/features/student/studentApiSlice";
+import { StudentProfile } from "../types";
 
 const Dashboard = () => {
-  const { loading } = useSelector((state: any) => state.student);
+  const { loading, search } = useSelector((state: any) => state.student);
   const {
     data: students,
     isLoading: studentsLoading,
@@ -24,11 +25,39 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(setLoading(studentsLoading));
-    
+
     if (!studentsLoading && !studentsError && students) {
-      dispatch(setStudents(students?.students));
+      const searchTerm = search.toLowerCase();
+
+      const filteredStudents = students.students.filter(
+        (student: StudentProfile) => {
+          if (searchTerm === "") return true;
+
+          const {
+            first_name,
+            last_name,
+            other_name,
+            index_number,
+            reference_no,
+            level,
+            program,
+          } = student;
+
+          return (
+            first_name.toLowerCase().includes(searchTerm) ||
+            last_name.toLowerCase().includes(searchTerm) ||
+            (other_name && other_name.toLowerCase().includes(searchTerm)) ||
+            index_number.toString().includes(searchTerm) ||
+            reference_no.toString().includes(searchTerm) ||
+            level.toString().includes(searchTerm) ||
+            program.name.toLowerCase().includes(searchTerm)
+          );
+        }
+      );
+
+      dispatch(setStudents(filteredStudents));
     }
-  }, [dispatch, studentsLoading, studentsError, students]);
+  }, [dispatch, studentsLoading, studentsError, students, search]);
 
   return (
     <>

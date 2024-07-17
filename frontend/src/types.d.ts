@@ -12,6 +12,7 @@ export interface StudentState {
   loading: boolean;
   student: {} | StudentProfile;
   tab: number;
+  search: string
 }
 
 export interface StudentProfile {

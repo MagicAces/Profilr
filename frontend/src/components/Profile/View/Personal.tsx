@@ -61,7 +61,7 @@ const Personal = () => {
               <button
                 type="button"
                 className="edit-button"
-                onClick={() => navigate(`/student/${student.id}/edit`)}
+                onClick={() => navigate(`/edit/student/${student.id}`)}
               >
                 <TbUserEdit />
                 <span>Edit</span>

@@ -11,7 +11,7 @@ import Starfield from "react-starfield";
 
 import "../css/edit.css";
 import { useParams } from "react-router";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { setCredentials } from "../redux/features/auth/authSlice";
 // import { useGetProfileQuery, useGetStudentQuery } from "../redux/features/user/userApiSlice";
 import Loader from "../components/Utils/Loader";
@@ -63,11 +63,14 @@ const Edit = () => {
           gender: newStudent?.gender?.toLowerCase() ?? "",
           level: newStudent?.level?.toString() ?? "",
           semester:
-            newStudent?.courses?.length > 0 ? newStudent?.courses[0]?.semester : 0,
+            newStudent?.courses?.length > 0
+              ? newStudent?.courses[0]?.semester
+              : 0,
           index_number: newStudent?.index_number ?? 0,
           reference_no: newStudent?.reference_no ?? 0,
           program_id: newStudent?.program?.id ?? 0,
-          course_ids: newStudent?.courses?.map((course: any) => course?.id) ?? [],
+          course_ids:
+            newStudent?.courses?.map((course: any) => course?.id) ?? [],
           image: newStudent?.image_url ?? "",
           // id: student?.id ?? 0
         })
@@ -81,7 +84,7 @@ const Edit = () => {
   }, [dispatch, programsLoading, programsError]);
 
   useEffect(() => {
-     const response = window.prompt("Enter the edit password:", "");
+    const response = window.prompt("Enter the edit password:", "");
 
     if (response === import.meta.env.VITE_ADMIN_EDIT_PASSWORD) {
       setEdit(true);
@@ -89,7 +92,7 @@ const Edit = () => {
       if (!response) toast.error("Password required");
       else toast.error("Invalid Password");
       setEdit(false);
-      navigate("/");
+      navigate("/student/" + id);
     }
   }, []);
 

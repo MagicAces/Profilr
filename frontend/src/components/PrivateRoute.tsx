@@ -19,7 +19,7 @@ const PrivateRoute = () => {
 
     if (!isAdmin) {
       const response = window.prompt("Enter the admin password:", "");
-
+      
       if (response === import.meta.env.VITE_ADMIN_PASSWORD) {
         dispatch(setIsAdmin(true));
       } else {
@@ -50,19 +50,20 @@ const PrivateRoute = () => {
         starColor={[138, 138, 138]}
         speedFactor={0.4}
         backgroundColor="black"
-        />
-        <div style={{
+      />
+      <div
+        style={{
           width: "100%",
           minHeight: "100vh",
           display: "flex",
           justifyContent: "center",
-          alignItems: "center"
-        }}>
-
-      <button className="continue-button" type="button" onClick={handleClick}>
-        Continue
-      </button>
-        </div>
+          alignItems: "center",
+        }}
+      >
+        <button className="continue-button" type="button" onClick={handleClick}>
+          Continue
+        </button>
+      </div>
     </>
   );
 };
