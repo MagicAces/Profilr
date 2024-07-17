@@ -18,7 +18,12 @@ const Content = () => {
         <div className="history-row">
           <h3>History ({students.length})</h3>
           {showSearch ? (
-            <span onClick={() => setShowSearch(false)}>
+            <span
+              onClick={() => {
+                setShowSearch(false);
+                dispatch(setSearch(""));
+              }}
+            >
               <MdSearchOff />
             </span>
           ) : (
