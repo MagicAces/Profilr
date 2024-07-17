@@ -27,7 +27,7 @@ const Dashboard = () => {
     dispatch(setLoading(studentsLoading));
 
     if (!studentsLoading && !studentsError && students) {
-      const searchTerm = search.toLowerCase();
+      const searchTerm: string = search.toLowerCase();
 
       const filteredStudents = students.students.filter(
         (student: StudentProfile) => {
@@ -43,6 +43,11 @@ const Dashboard = () => {
             program,
           } = student;
 
+          if (search.includes("level")) {
+            const value = searchTerm.split(" ");
+
+            return level.toString().includes(value[1]);
+          }
           return (
             first_name.toLowerCase().includes(searchTerm) ||
             last_name.toLowerCase().includes(searchTerm) ||
