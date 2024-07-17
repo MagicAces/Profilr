@@ -54,7 +54,7 @@ const Dashboard = () => {
             (other_name && other_name.toLowerCase().includes(searchTerm)) ||
             index_number.toString().includes(searchTerm) ||
             reference_no.toString().includes(searchTerm) ||
-            level.toString().includes(searchTerm) ||
+            // level.toString().includes(searchTerm) ||
             program.name.toLowerCase().includes(searchTerm)
           );
         }
